@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="MySQL - NetAccount@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+    <schema id="1" name="NetAccount">
+      <visible>1</visible>
+    </schema>
+    <schema id="2" name="bookstore"/>
+    <schema id="3" name="CRM"/>
+    <schema id="4" name="emp"/>
+    <schema id="5" name="exam"/>
+    <schema id="6" name="hibernate"/>
+    <schema id="7" name="information_schema"/>
+    <schema id="8" name="java0703"/>
+    <schema id="9" name="mydb1"/>
+    <schema id="10" name="mydb2"/>
+    <schema id="11" name="mydb3"/>
+    <schema id="12" name="mysql"/>
+    <schema id="13" name="mysql6"/>
+    <schema id="14" name="performance_schema"/>
+    <schema id="15" name="practise"/>
+    <schema id="16" name="servlet"/>
+    <schema id="17" name="ssm"/>
+    <schema id="18" name="ssmblog"/>
+    <schema id="19" name="struhib"/>
+    <schema id="20" name="struts2"/>
+    <schema id="21" name="sys"/>
+    <table id="22" parent="1" name="cost"/>
+    <column id="23" parent="22" name="cost_id">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="24" parent="22" name="name">
+      <mandatory>1</mandatory>
+      <data-type>varchar(50)|0</data-type>
+    </column>
+    <column id="25" parent="22" name="base_duration">
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="26" parent="22" name="base_cost">
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="27" parent="22" name="unit_cost">
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="28" parent="22" name="status">
+      <data-type>char(1)|0</data-type>
+    </column>
+    <column id="29" parent="22" name="descr">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="30" parent="22" name="creatTime">
+      <data-type>datetime|0</data-type>
+    </column>
+    <column id="31" parent="22" name="startTime">
+      <data-type>datetime|0</data-type>
+    </column>
+    <column id="32" parent="22" name="cost_type">
+      <data-type>char(1)|0</data-type>
+    </column>
+    <key id="33" parent="22" name="PRIMARY">
+      <columns>cost_id</columns>
+      <primary>1</primary>
+    </key>
+  </database-model>
+</dataSource>

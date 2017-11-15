@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanou.cost.mapper.CostMapper">
+
+    <!--查询所有-->
+    <select id="findAll"
+            parameterType="com.lanou.util.PageBean"
+            resultType="com.lanou.cost.domain.Cost">
+        SELECT * FROM cost limit #{pageSize} offset #{startIndex}
+    </select>
+
+    <!--查询条数-->
+    <select id="findCount"
+            parameterType="int"
+            resultType="int">
+        SELECT count(*) FROM cost
+    </select>
+    <!--增加-->
+    <insert id="save"
+            parameterType="com.lanou.cost.domain.Cost">
+        INSERT INTO cost(name,base_duration,base_cost,unit_cost,status,descr,creatTime,startTime,cost_type) VALUES
+        (#{name},#{base_duration},#{base_cost},#{unit_cost},#{status},#{descr},#{creatTime},#{startTime},#{cost_type})
+    </insert>
+
+    <!--根据id查询-->
+    <select id="findById"
+            parameterType="int"
+            resultType="com.lanou.cost.domain.Cost">
+        SELECT * FROM cost WHERE cost_id=#{id}
+    </select>
+
+    <!--根据id修改-->
+    <update id="updateById"
+            parameterType="com.lanou.cost.domain.Cost">
+        UPDATE cost SET cost_id=#{cost_id}
+        <if test="name!=null and name!=''">
+            ,name=#{name}
+        </if>
+        <if test="base_duration!=null and base_duration!=''">
+            ,base_duration=#{base_duration}
+        </if>
+        <if test="base_cost!=null and base_cost!=''">
+            , base_cost=#{base_cost}
+        </if>
+        <if test="unit_cost!=null and  unit_cost!=''">
+            ,unit_cost=#{unit_cost}
+        </if>
+        <if test="status!=null and status!=''">
+            ,status=#{status}
+        </if>
+        <if test="descr!=null and descr!=''">
+            ,descr=#{descr}
+        </if>
+        <if test="creatTime!=null and creatTime!=''">
+            ,creatTime=#{creatTime}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            ,startTime=#{startTime}
+        </if>
+        <if test="cost_type!=null and cost_type!=''">
+            ,cost_type=#{cost_type}
+        </if>
+
+       WHERE cost_id=#{cost_id}
+     </update>
+
+    <!--删除-->
+    <delete id="deleteById"
+            parameterType="int">
+        DELETE FROM cost WHERE cost_id=#{id} AND status='0'
+    </delete>
+
+    <!--启用收费-->
+    <update id="startCost"
+           parameterType="com.lanou.cost.domain.Cost">
+        UPDATE cost SET status = 1, startTime= #{startTime} WHERE cost_id = #{cost_id}
+    </update>
+
+</mapper>
