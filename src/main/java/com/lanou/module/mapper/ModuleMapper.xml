@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanou.module.mapper.ModuleMapper">
+
+    <!--<resultMap id="BaseResultMap" type="com.lanou.module.domain.Module">-->
+        <!--<id column="module_id" property="module_id"/>-->
+        <!--<result column="name" property="name"/>-->
+    <!--</resultMap>-->
+    <sql id="Base_Column_List">
+        module_id,name
+    </sql>
+
+    <select id="findAllModule" resultType="com.lanou.module.domain.Module">
+        SELECT
+        *
+        FROM module_info
+    </select>
+
+</mapper>

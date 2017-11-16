@@ -36,13 +36,13 @@
         <if test="name!=null and name!=''">
             ,name=#{name}
         </if>
-        <if test="base_duration!=null and base_duration!=''">
+        <if test="base_duration!=0 and base_duration!=''">
             ,base_duration=#{base_duration}
         </if>
-        <if test="base_cost!=null and base_cost!=''">
+        <if test="base_cost!=0 and base_cost!=''">
             , base_cost=#{base_cost}
         </if>
-        <if test="unit_cost!=null and  unit_cost!=''">
+        <if test="unit_cost!=0 and  unit_cost!=''">
             ,unit_cost=#{unit_cost}
         </if>
         <if test="status!=null and status!=''">

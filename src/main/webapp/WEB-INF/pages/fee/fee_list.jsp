@@ -88,15 +88,15 @@
         <div id="navi">                        
             <ul id="menu">
                 <li><a href="/index" class="index_off"></a></li>
-                <li><a href="/fee/role_list" class="role_off"></a></li>
-                <li><a href="/fee/admin_list" class="admin_off"></a></li>
+                <li><a href="/role/role_list" class="role_off"></a></li>
+                <li><a href="/admin/admin_list" class="admin_off"></a></li>
                 <li><a href="/fee/fee_list" class="fee_off"></a></li>
-                <li><a href="/fee/account_list" class="account_off"></a></li>
-                <li><a href="/fee/service_list" class="service_off"></a></li>
-                <li><a href="/fee/bill_list" class="bill_off"></a></li>
-                <li><a href="/fee/report_list" class="report_off"></a></li>
-                <li><a href="/fee/user_info" class="information_off"></a></li>
-                <li><a href="/fee/user_modi_pwd" class="password_on"></a></li>
+                <li><a href="/account/account_list" class="account_off"></a></li>
+                <li><a href="/service/service_list" class="service_off"></a></li>
+                <li><a href="/bill/bill_list" class="bill_off"></a></li>
+                <li><a href="/report/report_list" class="report_off"></a></li>
+                <li><a href="/user/user_info" class="information_off"></a></li>
+                <li><a href="/user/user_modi_pwd" class="password_on"></a></li>
             </ul>            
         </div>
         <!--导航区域结束-->
@@ -110,7 +110,7 @@
                         <input type="button" value="基费" class="sort_asc" onclick="sort(this);" />
                         <input type="button" value="时长" class="sort_asc" onclick="sort(this);" />
                     </div>
-                    <input type="button" value="增加" class="btn_add" onclick="location.href='fee_add';;" />
+                    <input type="button" value="增加" class="btn_add" onclick="location.href='fee_add';" />
                 </div> 
                 <!--启用操作的操作提示-->
                 <div id="operate_result_info" class="operate_success">
@@ -151,12 +151,14 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <input type="button" value="启用" class="btn_start" onclick="startFee(${c.cost_id});" />
-                                    <%--<input type="button" value="修改" class="btn_modify" onclick="location.href='fee_modi/${c.cost_id}';" />--%>
-                                    <input type="button" value="修改" class="btn_modify" onclick="updateFee(${c.cost_id});" />
+                                    <c:if test="${c.status==0}">
 
+                                        <input type="button" value="启用" class="btn_start" onclick="startFee(${c.cost_id});" />
+                                        <input type="button" value="修改" class="btn_modify" onclick="updateFee(${c.cost_id});" />
+                                        <input type="button" value="删除" class="btn_delete" onclick="deleteFee(${c.cost_id});" />
 
-                                    <input type="button" value="删除" class="btn_delete" onclick="deleteFee(${c.cost_id});" />
+                                    </c:if>
+
                                 </td>
                             </tr>
                         </c:forEach>
@@ -185,20 +187,20 @@
                     <c:if test="${pageBean.totalPage>5}">
                         <c:if test="${pageBean.pageNum <= 3}">
                             <c:forEach var="i" begin="1" end="5">
-                                <a href="/cost_list?pageNum=${i}"
+                                <a href="/fee/fee_list?pageNum=${i}"
                                    <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
                             </c:forEach>
                         </c:if>
 
                         <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum <= pageBean.totalPage -3}">
                             <c:forEach var="i" begin="${pageBean.pageNum-2}" end="${pageBean.pageNum+2}">
-                                <a href="/cost_list?pageNum=${i}"
+                                <a href="/fee/fee_list?pageNum=${i}"
                                    <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
                             </c:forEach>
                         </c:if>
                         <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum > pageBean.totalPage-3}">
                             <c:forEach var="i" begin="${pageBean.totalPage-4}" end="${pageBean.totalPage}">
-                                <a href="/cost_list?pageNum=${i}"
+                                <a href="/fee/fee_list?pageNum=${i}"
                                    <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
                             </c:forEach>
                         </c:if>

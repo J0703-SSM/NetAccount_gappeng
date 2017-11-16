@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanou.role.mapper.RoleModuleMapper">
+    <resultMap id="BaseResultMap" type="com.lanou.role.domain.RoleModule">
+        <result column="role_id" property="role_id"/>
+        <result column="module_id" property="module_id"/>
+    </resultMap>
+
+    <insert id="saveRoleModuleBatch"
+            useGeneratedKeys="true"
+            parameterType="com.lanou.role.domain.RoleModule">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO role_module(role_id,module_id)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.role_id},#{item.module_id})
+        </foreach>
+    </insert>
+
+    <delete id="deleteModuleByRoleId"
+            parameterType="int">
+        DELETE FROM role_module WHERE role_id=#{value}
+    </delete>
+</mapper>

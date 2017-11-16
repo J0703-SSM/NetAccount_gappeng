@@ -27,6 +27,12 @@
                         if (result.count>0){
                             showResultDiv(true);
                             window.setTimeout(showResultDiv(false), 3000);
+                        }else {
+                            $("#nameErr").html(result.maps["namemsg"]);
+                            $("#durationErr").html(result.maps["durationmsg"]);
+                            $("#costErr").html(result.maps["costmsg"]);
+                            $("#ucostErr").html(result.maps["ucostmsg"]);
+                            $("#descErr").html(result.maps["descmsg"])
                         }
                     }
                 })
@@ -87,15 +93,15 @@
         <div id="navi">
             <ul id="menu">
                 <li><a href="/index" class="index_off"></a></li>
-                <li><a href="/fee/role_list" class="role_off"></a></li>
-                <li><a href="/fee/admin_list" class="admin_off"></a></li>
+                <li><a href="/role/role_list" class="role_off"></a></li>
+                <li><a href="/admin/admin_list" class="admin_off"></a></li>
                 <li><a href="/fee/fee_list" class="fee_off"></a></li>
-                <li><a href="/fee/account_list" class="account_off"></a></li>
-                <li><a href="/fee/service_list" class="service_off"></a></li>
-                <li><a href="/fee/bill_list" class="bill_off"></a></li>
-                <li><a href="/fee/report_list" class="report_off"></a></li>
-                <li><a href="/fee/user_info" class="information_off"></a></li>
-                <li><a href="/fee/user_modi_pwd" class="password_on"></a></li>
+                <li><a href="/account/account_list" class="account_off"></a></li>
+                <li><a href="/service/service_list" class="service_off"></a></li>
+                <li><a href="/bill/bill_list" class="bill_off"></a></li>
+                <li><a href="/report/report_list" class="report_off"></a></li>
+                <li><a href="/user/user_info" class="information_off"></a></li>
+                <li><a href="/user/user_modi_pwd" class="password_on"></a></li>
             </ul>
         </div>
         <!--导航区域结束-->
@@ -109,8 +115,8 @@
                 <div class="text_info clearfix"><span>资费名称：</span></div>
                 <div class="input_info">
                     <input type="text" class="width300" value="${cost.name}" id="name"/>
-                    <span class="required">*</span>
-                    <div class="validate_msg_short">50长度的字母、数字、汉字和下划线的组合</div>
+                    <span class="required"></span>
+                    <div id="nameErr" class="validate_msg_short"></div>
                 </div>
                 <div class="text_info clearfix"><span>资费类型：</span></div>
                 <div class="input_info fee_type">
@@ -126,28 +132,28 @@
                 <div class="input_info">
                     <input type="text" value="${cost.base_duration}" id="base_duration" class="width100" />
                     <span class="info">小时</span>
-                    <span class="required">*</span>
-                    <div class="validate_msg_long">1-600之间的整数</div>
+                    <span class="required"></span>
+                    <div id="durationErr" class="validate_msg_long"></div>
                 </div>
                 <div class="text_info clearfix"><span>基本费用：</span></div>
                 <div class="input_info">
                     <input type="text" value="${cost.base_cost}" id="base_cost" class="width100" />
                     <span class="info">元</span>
-                    <span class="required">*</span>
-                    <div class="validate_msg_long">0-99999.99之间的数值</div>
+                    <span class="required"></span>
+                    <div id="costErr" class="validate_msg_long"></div>
                 </div>
                 <div class="text_info clearfix"><span>单位费用：</span></div>
                 <div class="input_info">
                     <input type="text" value="${cost.unit_cost}" id="unit_cost" class="width100" />
                     <span class="info">元/小时</span>
-                    <span class="required">*</span>
-                    <div class="validate_msg_long">0-99999.99之间的数值</div>
+                    <span class="required"></span>
+                    <div  id="ucostErr" class="validate_msg_long"></div>
                 </div>   
                 <div class="text_info clearfix"><span>资费说明：</span></div>
                 <div class="input_info_high">
                     <textarea class="width300 height70" id="descr">${cost.descr}
                     </textarea>
-                    <div class="validate_msg_short">100长度的字母、数字、汉字和下划线的组合</div>
+                    <div id="descErr" class="validate_msg_short"></div>
                 </div>                    
                 <div class="button_info clearfix">
                     <input type="button" value="保存" class="btn_save" onclick="showResult();" />

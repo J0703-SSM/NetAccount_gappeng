@@ -1,31 +1,62 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page isELIgnored="false" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>云科技</title>
         <link type="text/css" rel="stylesheet" media="all" href="/resource/styles/global.css" />
         <link type="text/css" rel="stylesheet" media="all" href="/resource/styles/global_color.css" />
+        <script src="/resource/js/JQ3.2.1.js"></script>
         <script language="javascript" type="text/javascript">
             //保存成功的提示信息
             function showResult() {
-                showResultDiv(true);
-                window.setTimeout("showResultDiv(false);", 3000);
+                alert(1);
+                $.ajax({
+                    type: "get",
+                    url: "/account/account_modisave",
+                    data: {
+                        account_id:$("#account_id").val(),
+                        real_name: $("#name").val(),
+                        telephone: $("#tel").val(),
+                        recommender_idcard: $("#recommender_idcard").val(),
+                        email: $("#email").val(),
+                        occupation: $("#occupation").val(),
+                        gender:$("input:radio:checked").val(),
+                        mailaddress:$("#mailaddress").val(),
+                        zipcode:$("#zipcode").val(),
+                        qq:$("#qq").val()
+                    }, success: function (result) {
+                        if (result.count > 0) {
+                            showResultDiv(true);
+                            window.setTimeout("showResultDiv(false);", 3000);
+                        }else {
+                            alert("推荐人不存在")
+                        }
+                    }
+                })
+
             }
+
+
+
             function showResultDiv(flag) {
                 var divResult = document.getElementById("save_result_info");
-                if (flag)
+                if (flag){
                     divResult.style.display = "block";
-                else
+                    location.href = "/account/account_list"
+                } else
                     divResult.style.display = "none";
             }
 
             //显示修改密码的信息项
-            function showPwd(chkObj) {
-                if (chkObj.checked)
-                    document.getElementById("divPwds").style.display = "block";
-                else
-                    document.getElementById("divPwds").style.display = "none";
-            }
+//            function showPwd(chkObj) {
+//                if (chkObj.checked)
+//                    document.getElementById("divPwds").style.display = "block";
+//                else
+//                    document.getElementById("divPwds").style.display = "none";
+//            }
         </script>
     </head>
     <body>
@@ -39,41 +70,41 @@
         <div id="navi">
             <ul id="menu">
                 <li><a href="/index" class="index_off"></a></li>
-                <li><a href="/role_list" class="role_off"></a></li>
-                <li><a href="/admin_list" class="admin_off"></a></li>
-                <li><a href="/fee_list" class="fee_off"></a></li>
-                <li><a href="/account_list" class="account_off"></a></li>
-                <li><a href="/service_list" class="service_off"></a></li>
-                <li><a href="/bill_list" class="bill_off"></a></li>
-                <li><a href="/report_list" class="report_off"></a></li>
-                <li><a href="/user_info" class="information_off"></a></li>
-                <li><a href="/user_modi_pwd" class="password_on"></a></li>
+                <li><a href="/role/role_list" class="role_off"></a></li>
+                <li><a href="/admin/admin_list" class="admin_off"></a></li>
+                <li><a href="/fee/fee_list" class="fee_off"></a></li>
+                <li><a href="/account/account_list" class="account_off"></a></li>
+                <li><a href="/service/service_list" class="service_off"></a></li>
+                <li><a href="/bill/bill_list" class="bill_off"></a></li>
+                <li><a href="/report/report_list" class="report_off"></a></li>
+                <li><a href="/user/user_info" class="information_off"></a></li>
+                <li><a href="/user/user_modi_pwd" class="password_on"></a></li>
             </ul>
         </div>
         <!--导航区域结束-->
         <!--主要区域开始-->
         <div id="main">  
             <!--保存成功或者失败的提示消息-->          
-            <div id="save_result_info" class="save_fail">保存失败，旧密码错误！</div>
+            <div id="save_result_info" class="save_fail">保存成功！</div>
             <form action="" method="" class="main_form">
                     <!--必填项-->
                     <div class="text_info clearfix"><span>账务账号ID：</span></div>
                     <div class="input_info">
-                        <input type="text" value="10" readonly class="readonly" />
+                        <input id="account_id" type="text" value="${account.account_id}" readonly class="readonly" />
                     </div>
-                    <div class="text_info clearfix"><span>姓名：</span></div>
+                    <div class="text_info clearfix"><span>姓名</span></div>
                     <div class="input_info">
-                        <input type="text" value="张三" />
+                        <input type="text" value="${account.real_name}" id="name"/>
                         <span class="required">*</span>
                         <div class="validate_msg_long error_msg">20长度以内的汉字、字母和数字的组合</div>
                     </div>
                     <div class="text_info clearfix"><span>身份证：</span></div>
                     <div class="input_info">
-                        <input type="text" value="230198765432123456" readonly class="readonly" />
+                        <input type="text" value="${account.idcard_no}" readonly class="readonly" />
                     </div>
                     <div class="text_info clearfix"><span>登录账号：</span></div>
                     <div class="input_info">
-                        <input type="text" value="user1" readonly class="readonly"  />        
+                        <input type="text" value="${account.login_name}" readonly class="readonly"  />
                         <!--                
                         <div class="change_pwd">
                             <input id="chkModiPwd" type="checkbox" onclick="showPwd(this);" />
@@ -106,53 +137,53 @@
                     -->             
                     <div class="text_info clearfix"><span>电话：</span></div>
                     <div class="input_info">
-                        <input type="text" class="width200"/>
+                        <input type="text" class="width200" value="${account.telephone}" id="tel"/>
                         <span class="required">*</span>
                         <div class="validate_msg_medium error_msg">正确的电话号码格式：手机或固话</div>
                     </div>
                     <div class="text_info clearfix"><span>推荐人身份证号码：</span></div>
                     <div class="input_info">
-                        <input type="text"/>
+                        <input type="text" value="${account.recommender_idcard}" id="recommender_idcard"/>
                         <div class="validate_msg_long error_msgs">正确的身份证号码格式</div>
                     </div>
-                    <div class="text_info clearfix"><span>生日：</span></div>
+                    <div class="text_info clearfix"><span>生日:</span></div>
                     <div class="input_info">
-                        <input type="text" value="由身份证号计算而来" readonly class="readonly" />
+                        <input type="text" value="${account.birthdate}" readonly class="readonly" />
                     </div>
                     <div class="text_info clearfix"><span>Email：</span></div>
                     <div class="input_info">
-                        <input type="text" class="width200"/>
+                        <input type="text" class="width200" value="${account.email}" id="email"/>
                         <div class="validate_msg_medium">50长度以内，合法的 Email 格式</div>
                     </div> 
                     <div class="text_info clearfix"><span>职业：</span></div>
                     <div class="input_info">
-                        <select>
-                            <option>干部</option>
-                            <option>学生</option>
-                            <option>技术人员</option>
-                            <option>其他</option>
+                        <select id="occupation">
+                            <option <c:if test="${account.occupation eq '干部'}">selected="selected"</c:if> >干部</option>
+                            <option <c:if test="${account.occupation eq '学生'}">selected="selected"</c:if> >学生</option>
+                            <option <c:if test="${account.occupation eq '技术人员'}">selected="selected"</c:if> >技术人员</option>
+                            <option <c:if test="${account.occupation eq '其他'}">selected="selected"</c:if>>其他</option>
                         </select>                        
                     </div>
                     <div class="text_info clearfix"><span>性别：</span></div>
                     <div class="input_info fee_type">
-                        <input type="radio" name="radSex" checked="checked" id="female" onclick="feeTypeChange(1);" />
+                        <input type="radio" name="radSex" <c:if test="${account.gender==1}">checked="checked"</c:if>  id="female" value="1" />
                         <label for="female">女</label>
-                        <input type="radio" name="radSex" id="male" onclick="feeTypeChange(2);" />
+                        <input type="radio" name="radSex" <c:if test="${account.gender==2}">checked="checked"</c:if>  id="male" value="2" />
                         <label for="male">男</label>
                     </div> 
                     <div class="text_info clearfix"><span>通信地址：</span></div>
                     <div class="input_info">
-                        <input type="text" class="width350"/>
+                        <input type="text" class="width350" value="${account.mailaddress}" id="mailaddress"/>
                         <div class="validate_msg_tiny">50长度以内</div>
                     </div> 
                     <div class="text_info clearfix"><span>邮编：</span></div>
                     <div class="input_info">
-                        <input type="text"/>
+                        <input type="text" value="${account.zipcode}" id="zipcode"/>
                         <div class="validate_msg_long">6位数字</div>
                     </div> 
                     <div class="text_info clearfix"><span>QQ：</span></div>
                     <div class="input_info">
-                        <input type="text"/>
+                        <input type="text" value="${account.qq}" id="qq"/>
                         <div class="validate_msg_long">5到13位数字</div>
                     </div>                
                     <!--操作按钮-->

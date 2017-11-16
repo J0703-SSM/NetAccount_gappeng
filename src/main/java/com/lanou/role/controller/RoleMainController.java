@@ -1,18 +1,18 @@
-package com.lanou.cost.controller;
+package com.lanou.role.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Created by dllo on 17/11/13.
+ * Created by dllo on 17/11/16.
  */
 @Controller
-@RequestMapping("/fee")
-public class MainController {
+@RequestMapping("role")
+public class RoleMainController {
 
-    @RequestMapping("/role_list")
+    @RequestMapping("/fee_list")
     public String role_list(){
-        return "role/role_list";
+        return "fee/fee_list";
     }
 
     @RequestMapping("/admin_list")

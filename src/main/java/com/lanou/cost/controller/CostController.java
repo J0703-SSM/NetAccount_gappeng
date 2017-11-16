@@ -1,5 +1,6 @@
 package com.lanou.cost.controller;
 
+import com.lanou.account.domain.Account;
 import com.lanou.util.AjaxResult;
 import com.lanou.util.PageBean;
 import com.lanou.cost.domain.Cost;
@@ -67,49 +68,41 @@ public class CostController {
 
     @ResponseBody
     @RequestMapping("/feeAdd")
-    public AjaxResult feeAdd(@Validated Cost cost, BindingResult br){
-        AjaxResult<Cost> result = new AjaxResult<Cost>();
-        Map<String,Object> maps = new HashMap<String, Object>();
-
-        if (br.hasErrors()){
-            FieldError nameError = br.getFieldError("name");
-            FieldError base_durationError = br.getFieldError("base_duration");
-            FieldError base_costError = br.getFieldError("base_cost");
-            FieldError unit_costError = br.getFieldError("unit_cost");
-            FieldError descrError = br.getFieldError("descr");
-
-            if (nameError!=null){
-               maps.put("namemsg",nameError.getDefaultMessage());
-            }
-            System.out.println(maps);
-//            if (base_durationError!=null){
-//                maps.put("durationmsg",base_durationError.getDefaultMessage());
-//            }
-//            if (base_costError!=null){
-//               maps.put("costmsg",base_costError.getDefaultMessage());
-//            }
-//            if (unit_costError!=null){
-//               maps.put("ucostmsg",base_costError.getDefaultMessage());
-//            }
-//            if (descrError!=null){
-//               maps.put("descmsg",descrError.getDefaultMessage());
-//            }
-        }
-
-        if (maps.size()>0){
-            result.setMaps(maps);
-            result.setCount(0);
-
-        }else {
+    public AjaxResult feeAdd(@Validated Cost cost, BindingResult result){
+        System.out.println(cost);
+        AjaxResult<Cost> ajaxResult = resultMap(cost,result);
+        if (ajaxResult.getMaps().size()==0){
             cost.setStatus("0");
             cost.setCreatTime(new Timestamp(System.currentTimeMillis()));
             int count = costService.save(cost);
-            result.setCount(count);
+            ajaxResult.setCount(count);
+        }else {
+            ajaxResult.setCount(0);
         }
-
-        return result;
+        return ajaxResult;
 
     }
+
+    /**
+     * 修改
+     * @param cost
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updById")
+    public AjaxResult<Cost> updById(@Validated Cost cost,BindingResult result){
+        System.out.println(cost);
+        AjaxResult<Cost> ajaxResult = resultMap(cost,result);
+       if (ajaxResult.getMaps().size()==0){
+           int count = costService.updateById(cost);
+           System.out.println(count);
+           ajaxResult.setCount(count);
+       }else {
+           ajaxResult.setCount(0);
+       }
+        return ajaxResult;
+    }
+
 
     /**
      * 修改之前判断资费是否已经启用
@@ -141,21 +134,6 @@ public class CostController {
     }
 
 
-    /**
-     * 修改
-     * @param cost
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/updById")
-    public AjaxResult<Cost> updById(Cost cost){
-        AjaxResult<Cost> result = new AjaxResult<Cost>();
-        System.out.println(cost);
-        int count = costService.updateById(cost);
-        System.out.println(count);
-        result.setCount(count);
-        return result;
-    }
 
     /**
      * 删除
@@ -204,6 +182,54 @@ public class CostController {
         Cost cost = costService.findById(cost_id);
         model.addAttribute("cost",cost);
         return "fee/fee_detail";
+    }
+
+    private AjaxResult resultMap(Cost cost, BindingResult result) {
+        AjaxResult ajaxCostResult = new AjaxResult();
+        Map<String, Object> maps = new HashMap<String, Object>();
+        if (cost.getCost_type().equals("2")) {
+            if (cost.getBase_duration() < 1 || cost.getBase_duration() > 600) {
+                maps.put("durationmsg", "1-600之间的整数");
+                ajaxCostResult.setCount(0);
+            }
+            if (cost.getBase_cost() == 0 || 99999.99 < cost.getBase_cost()) {
+                maps.put("costmsg", "0-99999.99之间的数值");
+                ajaxCostResult.setCount(0);
+            }
+            if (cost.getUnit_cost() == 0 || 99999.99 < cost.getUnit_cost()) {
+                maps.put("ucostmsg", "0-99999.99之间的数值");
+                ajaxCostResult.setCount(0);
+            }
+        }
+
+
+        if (cost.getCost_type().equals("1")) {
+            if (cost.getBase_cost() == 0 || 99999.99 < cost.getBase_cost()) {
+                maps.put("base_cost", "0-99999.99之间的数值");
+                ajaxCostResult.setCount(0);
+            }
+        }
+
+
+        if (cost.getCost_type().equals("3")) {
+            if (cost.getUnit_cost() == 0 || 99999.99 < cost.getUnit_cost()) {
+                maps.put("ucostmsg", "0-99999.99之间的数值");
+                ajaxCostResult.setCount(0);
+            }
+        }
+        FieldError nameErr = result.getFieldError("name");
+        FieldError descrErr = result.getFieldError("descr");
+
+        if (nameErr != null) {
+            maps.put("namemsg", nameErr.getDefaultMessage());
+            ajaxCostResult.setCount(0);
+        }
+        if (descrErr != null) {
+            maps.put("descmsg", descrErr.getDefaultMessage());
+            ajaxCostResult.setCount(0);
+        }
+        ajaxCostResult.setMaps(maps);
+        return ajaxCostResult;
     }
 
 }

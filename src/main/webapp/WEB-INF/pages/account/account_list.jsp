@@ -1,15 +1,32 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page isELIgnored="false" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>云科技</title>
         <link type="text/css" rel="stylesheet" media="all" href="/resource/styles/global.css" />
         <link type="text/css" rel="stylesheet" media="all" href="/resource/styles/global_color.css" />
+        <script src="/resource/js/JQ3.2.1.js"></script>
         <script language="javascript" type="text/javascript">
             //删除
-            function deleteAccount() {
+            function deleteAccount(account_id) {
                 var r = window.confirm("确定要删除此账务账号吗？\r\n删除后将不能恢复，且会删除其下属的所有业务账号。");
-                document.getElementById("operate_result_info").style.display = "block";
+                $.ajax({
+                    type:"get",
+                    url:"/account/account_delete",
+                    data:{
+                        account_id:account_id
+                    },success:function (result) {
+                        if(result.count>0){
+                            document.getElementById("operate_result_info").style.display = "block";
+                            window.setTimeout(location.href = "/account/account_list", 7000000);
+                        }else {
+                            alert("删除失败")
+                        }
+                    }
+                })
+
             }
             //开通或暂停
             function setState() {
@@ -29,15 +46,15 @@
         <div id="navi">                        
             <ul id="menu">
                 <li><a href="/index" class="index_off"></a></li>
-                <li><a href="/role_list" class="role_off"></a></li>
-                <li><a href="/admin_list" class="admin_off"></a></li>
-                <li><a href="/fee_list" class="fee_off"></a></li>
-                <li><a href="/account_list" class="account_off"></a></li>
-                <li><a href="/service_list" class="service_off"></a></li>
-                <li><a href="/bill_list" class="bill_off"></a></li>
-                <li><a href="/report_list" class="report_off"></a></li>
-                <li><a href="/user_info" class="information_off"></a></li>
-                <li><a href="/user_modi_pwd" class="password_on"></a></li>
+                <li><a href="/role/role_list" class="role_off"></a></li>
+                <li><a href="/admin/admin_list" class="admin_off"></a></li>
+                <li><a href="/fee/fee_list" class="fee_off"></a></li>
+                <li><a href="/account/account_list" class="account_off"></a></li>
+                <li><a href="/service/service_list" class="service_off"></a></li>
+                <li><a href="/bill/bill_list" class="bill_off"></a></li>
+                <li><a href="/report/report_list" class="report_off"></a></li>
+                <li><a href="/user/user_info" class="information_off"></a></li>
+                <li><a href="/user/user_modi_pwd" class="password_on"></a></li>
             </ul>            
         </div>
         <!--导航区域结束-->
@@ -48,7 +65,7 @@
                 <div class="search_add">                        
                     <div>身份证：<input type="text" value="不验证" class="text_search" /></div>                            
                     <div>姓名：<input type="text" class="width70 text_search" value="不验证" /></div>
-                    <div>登录名：<input type="text"  value="不验证" class="text_search"" /></div>
+                    <div>登录名：<input type="text"  value="不验证" class="text_search" /></div>
                     <div>
                         状态：
                         <select class="select_search">
@@ -59,7 +76,7 @@
                         </select>
                     </div>
                     <div><input type="button" value="搜索" class="btn_search" /></div>
-                    <input type="button" value="增加" class="btn_add" onclick="location.href='account_add.jsp';" />
+                    <input type="button" value="增加" class="btn_add" onclick="location.href='account_add';" />
                 </div>  
                 <!--删除等的操作提示-->
                 <div id="operate_result_info" class="operate_success">
@@ -79,73 +96,34 @@
                         <th class="width150">上次登录时间</th>                                                        
                         <th class="width200"></th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td><a href="account_detail.jsp">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>开通</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                            <input type="button" value="暂停" class="btn_pause" onclick="setState();" />
-                            <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.jsp';" />
-                            <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><a href="account_detail.jsp">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>暂停</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                            <input type="button" value="开通" class="btn_start" onclick="setState();" />
-                            <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.jsp';" />
-                            <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><a href="account_detail.jsp">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>删除</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><a href="account_detail.jsp">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>开通</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                            <input type="button" value="暂停" class="btn_pause" onclick="setState();" />
-                            <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.jsp';" />
-                            <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><a href="account_detail.jsp">贾强</a></td>
-                        <td>230102197902137862</td>
-                        <td>jiaqiang</td>
-                        <td>暂停</td>
-                        <td>2013-01-23</td>
-                        <td>2013-02-23 00:00:00</td>                            
-                        <td class="td_modi">
-                            <input type="button" value="开通" class="btn_start" onclick="setState();" />
-                            <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi.jsp';" />
-                            <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();" />
-                        </td>
-                    </tr>                    
+
+                        <c:forEach var="a" items="${pageBean.data}">
+                            <tr>
+                                <td>${a.account_id}</td>
+                                <td><a href="account_detail.jsp">${a.real_name}</a></td>
+                                <td>${a.idcard_no}</td>
+                                <td>${a.login_name}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${a.status==1}">
+                                            开通
+                                        </c:when>
+                                        <c:otherwise>
+                                            暂停
+                                        </c:otherwise>
+                                    </c:choose>
+
+                               </td>
+                                <td>${a.create_date}</td>
+                                <td>${a.last_login_time}</td>
+                                <td class="td_modi">
+                                    <input type="button" value="暂停" class="btn_pause" onclick="setState();" />
+                                    <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi/${a.account_id}';" />
+                                    <input type="button" value="删除" class="btn_delete" onclick="deleteAccount(${a.account_id});" />
+                                </td>
+                            </tr>
+                        </c:forEach>
+
                 </table>
                 <p>业务说明：<br />
                 1、创建则开通，记载创建时间；<br />
@@ -155,19 +133,47 @@
                 5、暂停账务账号，同时暂停下属的所有业务账号；<br />                
                 6、暂停后重新开通账务账号，并不同时开启下属的所有业务账号，需要在业务账号管理中单独开启；<br />
                 7、删除账务账号，同时删除下属的所有业务账号。</p>
-                </div>                   
+                </div>
                 <!--分页-->
                 <div id="pages">
-                    <a href="#">首页</a>
-        	        <a href="#">上一页</a>
-                    <a href="#" class="current_page">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
-                    <a href="#">下一页</a>
-                    <a href="#">末页</a>
-                </div>                    
+                    <c:if test="${pageBean.pageNum>1}">
+                        <a href="/account/account_list?pageNum=${pageBean.pageNum-1}">上一页</a>
+                    </c:if>
+                    <c:if test="${pageBean.totalPage<=5}">
+                        <c:forEach var="i" begin="1" end="${pageBean.totalPage}">
+                            <a href="/account/account_list?pageNum=${i}"
+                               <c:if test="${pageBean.pageNum==i}">class="current_page" </c:if>>${i}</a>
+                        </c:forEach>
+                    </c:if>
+
+
+                    <c:if test="${pageBean.totalPage>5}">
+                        <c:if test="${pageBean.pageNum <= 3}">
+                            <c:forEach var="i" begin="1" end="5">
+                                <a href="/account/account_list?pageNum=${i}"
+                                   <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
+                            </c:forEach>
+                        </c:if>
+
+                        <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum <= pageBean.totalPage -3}">
+                            <c:forEach var="i" begin="${pageBean.pageNum-2}" end="${pageBean.pageNum+2}">
+                                <a href="/account/account_list?pageNum=${i}"
+                                   <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum > pageBean.totalPage-3}">
+                            <c:forEach var="i" begin="${pageBean.totalPage-4}" end="${pageBean.totalPage}">
+                                <a href="/account/account_list?pageNum=${i}"
+                                   <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
+                            </c:forEach>
+                        </c:if>
+
+                    </c:if>
+                    <c:if test="${pageBean.pageNum<pageBean.totalPage}">
+                        <a href="/account/account_list?pageNum=${pageBean.pageNum+1}">下一页</a>
+                    </c:if>
+
+                </div>
             </form>
         </div>
         <!--主要区域结束-->

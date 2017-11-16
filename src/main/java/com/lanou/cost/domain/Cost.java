@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Digits;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -14,17 +15,14 @@ import java.util.Date;
  */
 public class Cost implements Serializable{
     private int cost_id;
-    @NotBlank(message = "123")
+    @Length(min = 1,max = 10,message = "字符长度在1到10之间")
     private String name;
-//    @Range(min = 1,max = 600,message = "1-600之间的整数")
     private int base_duration;
-//    @Range(min = 1,max = 10000,message = "1-10000之间的整数")
     private int base_cost;
-//    @Range(min = 1,max = 10000,message = "1-10000之间的整数")
     private int unit_cost;
     private String status;
+    @Length(min = 1, max = 100, message = "100长度的字母、数字、汉字和下划线的组合")
     private String descr;
-//    @Length(min = 1, max = 100, message = "100长度的字母、数字、汉字和下划线的组合")
     private Timestamp creatTime;
     private Timestamp startTime;
     private String cost_type;
