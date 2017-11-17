@@ -42,7 +42,7 @@ public class RoleController {
     }
 
     @RequestMapping("/role_add")
-    public String role_add(Model model){
+    public String role_add(){
         return "role/role_add";
     }
 
@@ -88,6 +88,7 @@ public class RoleController {
     public AjaxResult<Role> modisave(@RequestParam(value = "moduleIds[]") Integer[] moduleIds,
                                      Integer role_id){
         AjaxResult<Role> result = new AjaxResult<Role>();
+
         List<RoleModule> roleModules = roleService.updateRoleModule(role_id, moduleIds);
 
         if (roleModules!=null && roleModules.size()>0){

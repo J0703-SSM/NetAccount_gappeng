@@ -24,9 +24,20 @@
         ON r.role_id = rm.role_id
         LEFT JOIN module_info m
         ON rm.module_id = m.module_id
+        ORDER by r.role_id
 
 
    </select>
+
+    <select id="findAllRoleNoPage"
+           resultMap="ExpResultMap">
+         SELECT r.role_id,r.name,m.module_id mid,m.name mname
+        FROM role_info r LEFT JOIN role_module rm
+        ON r.role_id = rm.role_id
+        LEFT JOIN module_info m
+        ON rm.module_id = m.module_id
+        ORDER by r.role_id
+    </select>
 
     <select id="findCount"
             resultType="int">

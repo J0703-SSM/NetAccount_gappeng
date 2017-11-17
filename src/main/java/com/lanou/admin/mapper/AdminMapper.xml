@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanou.admin.mapper.AdminMapper">
+    <resultMap id="BaseResultMap" type="com.lanou.admin.domain.Admin">
+        <id column="admin_id" property="admin_id"/>
+        <result column="admin_code" property="admin_code"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="telephone" property="telephone"/>
+        <result column="email" property="email"/>
+        <result column="enrolldate" property="enrolldate"/>
+    </resultMap>
+
+    <resultMap id="ExpResultMap" type="com.lanou.admin.domain.Admin" extends="BaseResultMap">
+        <collection property="roles" ofType="com.lanou.role.domain.Role">
+            <id column="rid" property="role_id"/>
+            <result column="rname" property="name"/>
+            <collection property="modules" ofType="com.lanou.module.domain.Module">
+                <id column="mid" property="module_id"/>
+                <result column="mname" property="name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+
+
+    <select id="findCount" resultType="int">
+        SELECT count(*) FROM admin_info
+    </select>
+
+    <select id="findAllAdmin"
+            parameterType="com.lanou.util.PageBean"
+            resultMap="ExpResultMap">
+        SELECT a.admin_id,a.admin_code,a.name,a.telephone,a.email,a.enrolldate,
+        r.role_id rid,r.name rname
+        FROM (SELECT * FROM admin_info limit #{pageSize} offset #{startIndex}) a LEFT JOIN admin_role ar
+        ON a.admin_id = ar.admin_id
+        LEFT JOIN role_info r
+        ON ar.role_id = r.role_id
+
+
+   </select>
+
+    <select id="findMaxId" resultType="int">
+        SELECT MAX(admin_id) FROM admin_info
+    </select>
+
+    <insert id="saveAdmin"
+            parameterType="com.lanou.admin.domain.Admin">
+        INSERT INTO admin_info(admin_id,admin_code,password,name,telephone,email,enrolldate) VALUES (#{admin_id},#{admin_code},#{password},#{name},#{telephone},#{email},#{enrolldate})
+    </insert>
+
+    <delete id="deleteAdminById"
+            parameterType="int">
+        DELETE FROM admin_info WHERE admin_id=#{admin_id}
+    </delete>
+
+    <select id="findAdminById"
+            parameterType="int"
+            resultMap="ExpResultMap">
+        SELECT a.admin_id,a.admin_code,a.name,a.telephone,a.email,a.enrolldate,
+        r.role_id rid,r.name rname
+        FROM admin_info a LEFT JOIN admin_role ar
+        ON a.admin_id = ar.admin_id
+        LEFT JOIN role_info r
+        ON ar.role_id = r.role_id
+        WHERE a.admin_id = #{admin_id}
+
+    </select>
+
+    <update id="updateAdmin"
+            parameterType="com.lanou.admin.domain.Admin">
+        UPDATE admin_info SET name=#{name},telephone=#{telephone},email=#{email} WHERE admin_id=#{admin_id}
+    </update>
+
+
+</mapper>

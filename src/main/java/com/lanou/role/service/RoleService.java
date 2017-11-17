@@ -1,5 +1,7 @@
 package com.lanou.role.service;
 
+import com.lanou.admin.domain.Admin;
+import com.lanou.admin.domain.AdminRole;
 import com.lanou.role.domain.Role;
 import com.lanou.role.domain.RoleModule;
 import com.lanou.util.PageBean;
@@ -20,4 +22,8 @@ public interface RoleService {
     Role findByRoleId(int role_id);
 
     List<RoleModule> updateRoleModule(Integer role_id, Integer[] moduleIds);
+
+    List<Role> findAllRoleNoPage();
+
+
 }

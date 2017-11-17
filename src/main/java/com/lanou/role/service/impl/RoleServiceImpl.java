@@ -1,5 +1,8 @@
 package com.lanou.role.service.impl;
 
+import com.lanou.admin.domain.Admin;
+import com.lanou.admin.domain.AdminRole;
+import com.lanou.admin.mapper.AdminRoleMapper;
 import com.lanou.role.domain.Role;
 import com.lanou.role.domain.RoleModule;
 import com.lanou.role.mapper.RoleMapper;
@@ -22,6 +25,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Resource
     private RoleModuleMapper roleModuleMapper;
+
+    @Resource
+    private AdminRoleMapper adminRoleMapper;
 
 
     public PageBean<Role> findAllRole(Integer pageNum, int pageSize) {
@@ -61,7 +67,10 @@ public class RoleServiceImpl implements RoleService {
     public int deleteRoleById(int role_id) {
         roleModuleMapper.deleteModuleByRoleId(role_id);
 
+        adminRoleMapper.deleteAdminRoleByRoleId(role_id);
+
         return roleMapper.deleteRoleById(role_id);
+
 
     }
 
@@ -81,4 +90,11 @@ public class RoleServiceImpl implements RoleService {
         roleModuleMapper.saveRoleModuleBatch(roleModules);
         return roleModules;
     }
+
+    public List<Role> findAllRoleNoPage() {
+       return roleMapper.findAllRoleNoPage();
+
+    }
+
+
 }

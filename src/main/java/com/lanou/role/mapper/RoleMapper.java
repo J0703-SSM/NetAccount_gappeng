@@ -27,4 +27,7 @@ public interface RoleMapper {
 
 
     Role findRoleAndModuleById(int role_id);
+
+    List<Role> findAllRoleNoPage();
+
 }
