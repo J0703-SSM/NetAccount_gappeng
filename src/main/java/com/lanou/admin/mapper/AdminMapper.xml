@@ -74,4 +74,21 @@
     </update>
 
 
+    <select id="findAdminByCode"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        SELECT * FROM admin_info WHERE admin_code=#{value}
+    </select>
+
+    <select id="findByAdmin"
+            parameterType="com.lanou.admin.domain.Admin"
+             resultMap="BaseResultMap">
+        SELECT * FROM admin_info WHERE admin_code=#{admin_code} AND password=#{password}
+    </select>
+
+    <select id="findAdminByCodeAndPasw"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+         SELECT * FROM admin_info WHERE admin_code=#{admin_code} AND password=#{password}
+    </select>
 </mapper>

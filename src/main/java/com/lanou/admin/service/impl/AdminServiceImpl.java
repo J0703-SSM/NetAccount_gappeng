@@ -90,4 +90,18 @@ public class AdminServiceImpl implements AdminService {
         return countAdmin;
 
     }
+
+    public Admin findAdminByCode(String admin_code) {
+       return adminMapper.findAdminByCode(admin_code);
+
+    }
+
+    public Admin findBydmin(Admin admin) {
+        return adminMapper.findByAdmin(admin);
+    }
+
+    public Admin findAdminByCodeAndPasw(String admin_code, String password) {
+       return adminMapper.findAdminByCodeAndPasw(admin_code,password);
+
+    }
 }

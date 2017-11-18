@@ -19,4 +19,10 @@ public interface AdminService {
     Admin findAdminById(int admin_id);
 
     int updateAdminRole(Admin admin, Integer[] role_ids);
+
+    Admin findAdminByCode(String admin_code);
+
+    Admin findBydmin(Admin admin);
+
+    Admin findAdminByCodeAndPasw(String admin_code, String password);
 }

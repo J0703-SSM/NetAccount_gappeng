@@ -23,4 +23,10 @@ public interface AdminMapper {
     Admin findAdminById(int admin_id);
 
     int updateAdmin(Admin admin);
+
+    Admin findAdminByCode(String admin_code);
+
+    Admin findByAdmin(Admin admin);
+
+    Admin findAdminByCodeAndPasw(String admin_code, String password);
 }

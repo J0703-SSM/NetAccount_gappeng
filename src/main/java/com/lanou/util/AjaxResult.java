@@ -9,6 +9,16 @@ public class AjaxResult<T> {
     private int count;
     private Map<String,Object> maps;
 
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public int getCount() {
         return count;
     }

@@ -184,6 +184,8 @@ public class CostController {
         return "fee/fee_detail";
     }
 
+
+
     private AjaxResult resultMap(Cost cost, BindingResult result) {
         AjaxResult ajaxCostResult = new AjaxResult();
         Map<String, Object> maps = new HashMap<String, Object>();

@@ -1,6 +1,7 @@
 package com.lanou.admin.domain;
 
 import com.lanou.role.domain.Role;
+import org.hibernate.validator.constraints.Length;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -10,14 +11,20 @@ import java.util.List;
  */
 public class Admin {
     private int admin_id;
+    @Length(min = 1,max = 30,message = "30长度的字母、数字和下划线")
     private String admin_code;
+    @Length(min = 1,max = 30,message = "30长度的字母、数字和下划线")
     private String password;
+    @Length(min = 1,max = 30,message = "30长度的字母、数字和下划线")
     private String name;
+
     private String telephone;
     private String email;
     private Timestamp enrolldate;
-
+    @Length(min = 1,max = 30,message = "30长度的字母、数字和下划线")
     private String repassword;
+    private String verifyCode;
+
 
     /**
      * 管理员拥有的角色  一对多
@@ -38,6 +45,14 @@ public class Admin {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
     }
 
     public Admin() {

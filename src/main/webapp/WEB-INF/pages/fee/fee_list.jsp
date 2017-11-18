@@ -10,13 +10,6 @@
         <link type="text/css" rel="stylesheet" media="all" href="/resource/styles/global_color.css" />
         <script src="/resource/js/JQ3.2.1.js"></script>
         <script language="javascript" type="text/javascript">
-            //排序按钮的点击事件
-            function sort(btnObj) {
-                if (btnObj.className == "sort_desc")
-                    btnObj.className = "sort_asc";
-                else
-                    btnObj.className = "sort_desc";
-            }
 
             //启用
             function startFee(cost_id) {
@@ -75,6 +68,15 @@
                     }
                 })
             }
+
+            //排序按钮的点击事件
+            function sort(btnObj) {
+                if (btnObj.className == "sort_desc")
+                    btnObj.className = "sort_asc";
+                else
+                    btnObj.className = "sort_desc";
+            }
+
         </script>        
     </head>
     <body>
