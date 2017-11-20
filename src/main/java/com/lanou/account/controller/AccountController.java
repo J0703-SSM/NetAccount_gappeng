@@ -79,16 +79,19 @@ public class AccountController {
         return result;
     }
 
+
     /**
-     * 删除
-     * @param account_id
+     * 删除 将状态改为3
+     * @param account
      * @return
      */
     @ResponseBody
     @RequestMapping("/account_delete")
-    public AjaxResult<Account> account_delete(Integer account_id){
+    public AjaxResult<Account> account_delete(Account account){
         AjaxResult<Account> result = new AjaxResult<Account>();
-        int count = accountService.deleteById(account_id);
+        account.setClose_date(new Timestamp(System.currentTimeMillis()));
+        account.setStatus("3");
+        int count = accountService.deleteAccount(account);
         result.setCount(count);
         return result;
     }
@@ -99,8 +102,8 @@ public class AccountController {
      * @param account_id
      * @return
      */
-    @RequestMapping("/account_modi/{account_id}")
-    public String account_modi(Model model, @PathVariable Integer account_id){
+    @RequestMapping("/account_modi")
+    public String account_modi(Model model,Integer account_id){
         System.out.println(account_id);
         Account account = accountService.findById(account_id);
         //通过推荐人id找到推荐人   得到推荐人的身份证号
@@ -141,6 +144,22 @@ public class AccountController {
         }else {
             result.setCount(0);
         }
+        return result;
+    }
+    @ResponseBody
+    @RequestMapping("/account_beginOrStop")
+    public AjaxResult<Account> account_beginOrStop(Account account){
+        AjaxResult<Account> result = new AjaxResult<Account>();
+        int count =0;
+        if (account.getStatus().equals("2")){
+            account.setStatus("1");
+            count = accountService.setStauts(account);
+        }else if (account.getStatus().equals("1")){
+            account.setStatus("2");
+            account.setPause_date(new Timestamp(System.currentTimeMillis()));
+            count= accountService.setStauts(account);
+        }
+        result.setCount(count);
         return result;
     }
 

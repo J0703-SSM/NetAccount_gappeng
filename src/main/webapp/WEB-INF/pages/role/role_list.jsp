@@ -18,10 +18,13 @@
                         role_id:role_id
                     },success:function (result) {
                         if(result.count > 0){
-                            document.getElementById("operate_result_info").style.display = "block" ;
-                            location.href = "/role/role_list";
+                            $("#operate_result_info").html("删除成功");
+                            document.getElementById("operate_result_info").style.display="block";
+                            window.setTimeout('location.href = "/role/role_list"', 2000);
                         }else{
-                            alert("删除失败")
+                            $("#operate_result_fail").html("删除失败");
+                            document.getElementById("operate_result_fail").style.display="block";
+
                         }
                     }
                 })
@@ -101,8 +104,10 @@
                 <!--删除的操作提示-->
                 <div id="operate_result_info" class="operate_success">
                     <img src="../images/close.png" onclick="this.parentNode.style.display='none';" />
-                    删除成功！
                 </div> <!--删除错误！该角色被使用，不能删除。-->
+                <div id="operate_result_fail" class="operate_fail">
+                    <img src="../images/close.png" onclick="this.parentNode.style.display='none';" />
+                </div>
                 <!--数据区域：用表格展示数据-->     
                 <div id="data">                      
                     <table id="datalist">
@@ -128,7 +133,7 @@
                                 </c:if>
                             </td>
                             <td>
-                                <input type="button" value="修改" class="btn_modify" onclick="location.href='role_modi/${role.role_id}';"/>
+                                <input type="button" value="修改" class="btn_modify" onclick="location.href='role_modi?role_id=${role.role_id}';"/>
                                 <input type="button" value="删除" class="btn_delete" onclick="deleteRole(${role.role_id});" />
                             </td>
                         </tr>
@@ -173,6 +178,7 @@
                     </c:if>
                     <c:if test="${pageBean.pageNum<pageBean.totalPage}">
                         <a href="/role/role_list?pageNum=${pageBean.pageNum+1}">下一页</a>
+                        <a href="/role/role_list?pageNum=${pageBean.totalPage}">尾页</a>
                     </c:if>
                 </div>
                 </form>

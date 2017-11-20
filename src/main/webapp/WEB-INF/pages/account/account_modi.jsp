@@ -12,7 +12,6 @@
         <script language="javascript" type="text/javascript">
             //保存成功的提示信息
             function showResult() {
-                alert(1);
                 $.ajax({
                     type: "get",
                     url: "/account/account_modisave",
@@ -29,10 +28,13 @@
                         qq:$("#qq").val()
                     }, success: function (result) {
                         if (result.count > 0) {
-                            showResultDiv(true);
-                            window.setTimeout("showResultDiv(false);", 3000);
+                            $("#operate_result_info").html("保存成功");
+                            document.getElementById("operate_result_info").style.display="block";
+                            window.setTimeout('location.href = "/account/account_list"', 3000);
                         }else {
-                            alert("推荐人不存在")
+                            $("#save_result_fail").html("保存失败,推荐人不存在");
+                            document.getElementById("save_result_fail").style.display="block";
+                            window.setTimeout('location.href = "/account/account_modi?account_id=' + $("#account_id").val() + '"',2000);
                         }
                     }
                 })
@@ -40,15 +42,6 @@
             }
 
 
-
-            function showResultDiv(flag) {
-                var divResult = document.getElementById("save_result_info");
-                if (flag){
-                    divResult.style.display = "block";
-                    location.href = "/account/account_list"
-                } else
-                    divResult.style.display = "none";
-            }
 
             //显示修改密码的信息项
 //            function showPwd(chkObj) {
@@ -123,8 +116,11 @@
         <!--导航区域结束-->
         <!--主要区域开始-->
         <div id="main">  
-            <!--保存成功或者失败的提示消息-->          
-            <div id="save_result_info" class="save_fail">保存成功！</div>
+            <!--保存成功或者失败的提示消息-->
+            <div id="operate_result_info" class="operate_success">
+                <img src="/resource/images/close.png" onclick="this.parentNode.style.display='none';" />
+            </div>
+            <div id="save_result_info" class="save_fail"></div>
             <form action="" method="" class="main_form">
                     <!--必填项-->
                     <div class="text_info clearfix"><span>账务账号ID：</span></div>
@@ -228,7 +224,7 @@
                     <!--操作按钮-->
                     <div class="button_info clearfix">
                         <input type="button" value="保存" class="btn_save" onclick="showResult();" />
-                        <input type="button" value="取消" class="btn_save" />
+                        <input type="button" value="取消" class="btn_save"/>
                     </div>
                 </form>  
         </div>

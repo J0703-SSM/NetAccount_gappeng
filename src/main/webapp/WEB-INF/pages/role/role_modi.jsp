@@ -10,7 +10,8 @@
     <script src="/resource/js/JQ3.2.1.js"></script>
     <script language="javascript" type="text/javascript">
         //保存成功的提示消息
-        function showResult() {
+        function showResult(role_id) {
+            alert(1)
             var module_values = [];
             $("input:checkbox:checked").each(function () {
                 module_values.push($(this).val())
@@ -20,13 +21,18 @@
                 url: "/role/role_modisave",
                 data: {
                     "moduleIds": module_values,
-                    "role_id": $("#role_id").val()
+                    role_id: role_id,
+                    name:$("#name").val()
                 }, success: function (result) {
+                    alert(2)
                     if (result.count > 0) {
-                        showResultDiv(true);
-                        window.setTimeout("showResultDiv(false);", 3000);
+                        $("#save_result_info").html("保存成功");
+                        document.getElementById("save_result_info").style.display="block";
+                        window.setTimeout('location.href = "/role/role_list"', 2000);
                     } else {
-                        alert("更新失败！")
+                        $("#save_result_fail").html("保存失败");
+                        document.getElementById("save_result_info").style.display="block";
+                        window.setTimeout('location.href = "/role/role_modi?role_id=' + $("#role_id").val() + '"',2000);
 
                     }
 
@@ -35,16 +41,7 @@
             })
 
         }
-        function showResultDiv(flag) {
-            var divResult = document.getElementById("save_result_info");
-            if (flag){
-                divResult.style.display = "block";
-            } else{
-                divResult.style.display = "none";
-                location.href = "/role/role_list";
-            }
 
-        }
     </script>
 </head>
 <body>
@@ -112,11 +109,12 @@
 <!--主要区域开始-->
 <div id="main">
     <!--保存操作后的提示信息：成功或者失败-->
-    <div id="save_result_info" class="save_success">保存成功！</div>
+    <div id="save_result_info" class="save_success"></div>
+    <div id="save_result_fail" class="save_fail"></div>
     <form action="" method="" class="main_form">
         <div class="text_info clearfix"><span>角色名称：</span></div>
         <div class="input_info">
-            <input type="text" class="width200" id="role_id" value="${role.role_id}"/>
+            <input type="text" class="width200" id="name" value="${role.name}"/>
             <span class="required">*</span>
             <div class="validate_msg_medium error_msg">不能为空，且为20长度的字母、数字和汉字的组合</div>
         </div>
@@ -142,7 +140,7 @@
             <div class="validate_msg_tiny">至少选择一个权限</div>
         </div>
         <div class="button_info clearfix">
-            <input type="button" value="保存" class="btn_save" onclick="showResult();"/>
+            <input type="button" value="保存" class="btn_save" onclick="showResult(${role.role_id});"/>
             <input type="button" value="取消" class="btn_save"/>
         </div>
     </form>

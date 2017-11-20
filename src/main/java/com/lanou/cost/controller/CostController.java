@@ -183,6 +183,23 @@ public class CostController {
         model.addAttribute("cost",cost);
         return "fee/fee_detail";
     }
+    @RequestMapping("/fee_order")
+    public String fee_order(Integer pageNum,String sort_name,String column,Model model){
+        model.addAttribute("sort_name",sort_name);
+        model.addAttribute("column",column);
+        if (pageNum==null){
+            pageNum = 1;
+        }
+        String condition = sort_name.split("_")[1];
+        PageBean<Cost> pageBean = costService.findByOrder(pageNum, pageSize, condition, column);
+        if (column.equals("base_cost")) {
+            model.addAttribute("cost_sort", sort_name);
+        } else {
+            model.addAttribute("date_sort", sort_name);
+        }
+        model.addAttribute("pageBean",pageBean);
+        return "fee/fee_list";
+    }
 
 
 

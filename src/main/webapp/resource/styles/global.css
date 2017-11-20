@@ -443,8 +443,30 @@ span.required
     font-weight:bold;
 }
 
+#save_result_fail
+{
+    width: 600px;
+    line-height: 50px;
+    padding-left: 40px;
+    font-size: 14px;
+    display: none;
+    font-weight:bold;
+}
+
 /* 删除操作后的提示消息 */
 #operate_result_info
+{
+    width: 400px;
+    line-height: 70px;
+    padding-left: 40px;
+    font-size: 16px;
+    display: none;
+    position: absolute;
+    z-index: 100;
+    top: 90px;
+    left: 30%;
+}
+#operate_result_fail
 {
     width: 400px;
     line-height: 70px;

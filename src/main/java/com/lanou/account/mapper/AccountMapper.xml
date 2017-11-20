@@ -24,9 +24,9 @@
         VALUES (#{recommender_id},#{login_name},#{login_passwd},#{status},#{create_date},#{pause_date},#{close_date},#{real_name},#{idcard_no},#{birthdate},#{gender},#{occupation},#{telephone},#{email},#{mailaddress},#{zipcode},#{qq},#{last_login_time},#{last_login_ip})
     </insert>
 
-    <delete id="deleteById"
-            parameterType="int">
-        DELETE FROM account WHERE account_id=#{id}
+    <delete id="deleteAccount"
+            parameterType="com.lanou.account.domain.Account">
+       UPDATE account SET status=#{status},close_date=#{close_date} WHERE account_id=#{account_id}
     </delete>
 
 <!--根据身份证id查找-->
@@ -49,5 +49,12 @@
         UPDATE account SET recommender_id=#{recommender_id},real_name=#{real_name},gender=#{gender},occupation=#{occupation},telephone=#{telephone},email=#{email},mailaddress=#{mailaddress},zipcode=#{zipcode},qq=#{qq}
         WHERE account_id=#{ account_id}
     </update>
+
+    <!--开通或暂停-->
+    <update id="setStauts"
+            parameterType="com.lanou.account.domain.Account">
+        UPDATE account SET status=#{status},pause_date=#{pause_date} WHERE account_id=#{account_id}
+    </update>
+
 
 </mapper>

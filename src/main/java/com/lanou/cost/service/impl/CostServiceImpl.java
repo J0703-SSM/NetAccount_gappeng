@@ -46,4 +46,14 @@ public class CostServiceImpl implements CostService{
     public int startCost(Cost cost) {
         return costMapper.startCost(cost);
     }
+
+    public PageBean<Cost> findByOrder(Integer pageNum, int pageSize, String condition, String column) {
+        int totalCount = costMapper.findCount();
+        PageBean<Cost> pageBean = new PageBean<Cost>(pageNum,pageSize,totalCount,condition,column);
+        List<Cost> costs = costMapper.findByOrder(pageBean);
+        pageBean.setData(costs);
+        return pageBean;
+    }
+
+
 }

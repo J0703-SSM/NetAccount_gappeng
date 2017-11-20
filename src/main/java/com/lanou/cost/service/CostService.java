@@ -2,6 +2,9 @@ package com.lanou.cost.service;
 
 import com.lanou.util.PageBean;
 import com.lanou.cost.domain.Cost;
+import sun.jvm.hotspot.debugger.Page;
+
+import java.util.List;
 
 /**
  * Created by dllo on 17/11/13.
@@ -18,4 +21,7 @@ public interface CostService {
     int deleteById(int id);
 
     int startCost(Cost cost);
+
+
+    PageBean<Cost> findByOrder(Integer pageNum, int pageSize, String condition, String column);
 }

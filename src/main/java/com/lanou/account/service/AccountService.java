@@ -12,8 +12,6 @@ public interface AccountService {
 
     int save(Account account);
 
-    int deleteById(Integer id);
-
     Account findById(Integer account_id);
 
     Account findByIdCard(String id);
@@ -22,4 +20,7 @@ public interface AccountService {
 
     int update(Account account);
 
+    int deleteAccount(Account account);
+
+    int setStauts(Account account);
 }

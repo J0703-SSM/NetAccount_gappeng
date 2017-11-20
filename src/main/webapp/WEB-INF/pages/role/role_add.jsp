@@ -25,11 +25,13 @@
                         "name": $("#roleName").val()
                     }, success: function (result) {
                         if (result.count > 0) {
-                            showResultDiv(true);
-                            window.setTimeout("showResultDiv(false);", 3000);
+                            $("#save_result_info").html("保存成功");
+                            document.getElementById("save_result_info").style.display="block";
+                            window.setTimeout('location.href = "/role/role_list"', 2000);
                         } else {
-                           alert("保存失败！角色名称重复！")
-
+                            $("#save_result_fail").html("保存失败");
+                            document.getElementById("save_result_info").style.display="block";
+                            window.setTimeout('location.href = "/role/role_add"', 2000);
                         }
 
                     }
@@ -38,18 +40,7 @@
 
             }
 
-            function showResultDiv(flag,result) {
-                var divResult = document.getElementById("save_result_info");
-                if (!flag){
-                    divResult.style.display = "block";
-                }else{
-                    divResult.style.display = "none";
-                    location.href = "/role/role_list";
 
-                }
-
-
-            }
 
     </script>
 </head>
@@ -118,7 +109,8 @@
 <!--主要区域开始-->
 <div id="main">
     <!--保存操作后的提示信息：成功或者失败-->
-    <div id="save_result_info" class="save_success">保存成功！</div>
+    <div id="save_result_info" class="save_success"></div>
+    <div id="save_result_fail" class="save_fail"></div>
     <form action="" method="" class="main_form">
         <div class="text_info clearfix"><span>角色名称：</span></div>
         <div class="input_info">

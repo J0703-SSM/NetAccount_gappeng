@@ -30,4 +30,5 @@ public interface RoleMapper {
 
     List<Role> findAllRoleNoPage();
 
+    int updateRoleById(Role role);
 }

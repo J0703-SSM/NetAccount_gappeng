@@ -77,4 +77,9 @@
         WHERE r.role_id =#{value}
 
     </select>
+
+    <update id="updateRoleById"
+            parameterType="com.lanou.role.domain.Role">
+        UPDATE role_info SET name=#{name} WHERE role_id = #{role_id}
+    </update>
 </mapper>

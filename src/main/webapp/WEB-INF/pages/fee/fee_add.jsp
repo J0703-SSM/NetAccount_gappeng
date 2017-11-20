@@ -23,8 +23,9 @@
                         descr: $("#descr").val()
                     }, success:function (result) {
                         if (result.count>0){
-                            showResultDiv(true);
-                            window.setTimeout("showResultDiv(false);", 3000);
+                            $("#save_result_info").html("保存成功");
+                            document.getElementById("save_result_info").style.display="block";
+                            window.setTimeout('location.href = "/fee/fee_list"', 3000);
                         }else {
                             $("#nameErr").html(result.maps["namemsg"]);
                             $("#durationErr").html(result.maps["durationmsg"]);
@@ -36,14 +37,6 @@
                     }
                 })
 
-            }
-            function showResultDiv(flag) {
-                var divResult = document.getElementById("save_result_info");
-                if (!flag)
-                    divResult.style.display = "block";
-                else
-                    divResult.style.display = "none";
-                 location.href="/fee/fee_list"
             }
 
             //切换资费类型
@@ -143,8 +136,9 @@
         </div>
         <!--导航区域结束-->
         <!--主要区域开始-->
-        <div id="main">            
-            <div id="save_result_info" class="save_fail">保存失败，资费名称重复！</div>
+        <div id="main">
+            <div id="save_result_fail" class="save_fail"></div>
+            <div id="save_result_info" class="save_success"></div>
             <form action="" method="post" class="main_form">
                 <div class="text_info clearfix"><span>资费名称：</span></div>
                 <div class="input_info">

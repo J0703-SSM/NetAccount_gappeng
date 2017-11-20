@@ -21,7 +21,7 @@ public interface RoleService {
 
     Role findByRoleId(int role_id);
 
-    List<RoleModule> updateRoleModule(Integer role_id, Integer[] moduleIds);
+    List<RoleModule> updateRoleModule(Role role, Integer[] moduleIds);
 
     List<Role> findAllRoleNoPage();
 

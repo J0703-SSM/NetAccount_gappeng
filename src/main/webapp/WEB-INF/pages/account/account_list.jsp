@@ -19,19 +19,46 @@
                         account_id:account_id
                     },success:function (result) {
                         if(result.count>0){
+                            $("#operate_result_info").html("删除成功");
                             document.getElementById("operate_result_info").style.display = "block";
-                            window.setTimeout(location.href = "/account/account_list", 7000000);
+                            window.setTimeout('location.href = "/account/account_list?pageNum=' + ${pageBean.pageNum} + '"',2000);
                         }else {
-                            alert("删除失败")
+                            $("#save_result_info").html("删除失败");
                         }
+
                     }
                 })
 
             }
             //开通或暂停
-            function setState() {
-                var r = window.confirm("确定要开通此账务账号吗？");
-                document.getElementById("operate_result_info").style.display = "block";
+            function setState(status,account_id) {
+                if (status == 1){
+                    var r = window.confirm("确定要暂停此账务账号吗？");
+                }else if (status==2){
+                    var r = window.confirm("确定要开通此账务账号吗？");
+                }
+                $.ajax({
+                    type:"post",
+                    url:"/account/account_beginOrStop",
+                    data:{
+                        status:status,
+                        account_id:account_id
+                    },success:function (result) {
+                        if (result.count>0){
+                            $("#operate_result_info").html("操作成功")
+                            document.getElementById("operate_result_info").style.display="block"
+                            window.setTimeout('location.href = "/account/account_list?pageNum=' + ${pageBean.pageNum} + '"',2000);
+                        }else {
+                           $("#save_result_info").html("操作失败")
+                            document.getElementById("save_result_info").style.display="block"
+                        }
+
+
+
+                    }
+                })
+
+
             }
         </script>
     </head>
@@ -43,7 +70,7 @@
         </div>
         <!--Logo区域结束-->
         <!--导航区域开始-->
-        <div id="navi">                        
+        <div id="navi">
             <ul id="menu">
                 <li><a href="/index" class="index_off"></a></li>
                 <c:forEach items="${applicationScope.admin.roles}" var="role">
@@ -94,15 +121,15 @@
                 </c:forEach>
                 <li><a href="/user/user_info" class="information_off"></a></li>
                 <li><a href="/user/user_modi_pwd" class="password_off"></a></li>
-            </ul>            
+            </ul>
         </div>
         <!--导航区域结束-->
         <!--主要区域开始-->
         <div id="main">
             <form action="" method="">
                 <!--查询-->
-                <div class="search_add">                        
-                    <div>身份证：<input type="text" value="不验证" class="text_search" /></div>                            
+                <div class="search_add">
+                    <div>身份证：<input type="text" value="不验证" class="text_search" /></div>
                     <div>姓名：<input type="text" class="width70 text_search" value="不验证" /></div>
                     <div>登录名：<input type="text"  value="不验证" class="text_search" /></div>
                     <div>
@@ -116,14 +143,15 @@
                     </div>
                     <div><input type="button" value="搜索" class="btn_search" /></div>
                     <input type="button" value="增加" class="btn_add" onclick="location.href='account_add';" />
-                </div>  
+                </div>
                 <!--删除等的操作提示-->
                 <div id="operate_result_info" class="operate_success">
-                    <img src="../images/close.png" onclick="this.parentNode.style.display='none';" />
-                    删除成功，且已删除其下属的业务账号！
-                </div>   
-                <!--数据区域：用表格展示数据-->     
-                <div id="data">            
+                    <img src="/resource/images/close.png" onclick="this.parentNode.style.display='none';" />
+                </div>
+                <div id="save_result_info" class="save_fail"></div>
+
+                <!--数据区域：用表格展示数据-->
+                <div id="data">
                     <table id="datalist">
                     <tr>
                         <th>账号ID</th>
@@ -132,7 +160,7 @@
                         <th>登录名</th>
                         <th>状态</th>
                         <th class="width100">创建日期</th>
-                        <th class="width150">上次登录时间</th>                                                        
+                        <th class="width150">上次登录时间</th>
                         <th class="width200"></th>
                     </tr>
 
@@ -144,11 +172,14 @@
                                 <td>${a.login_name}</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${a.status==1}">
+                                        <c:when test="${a.status eq 1}">
                                             开通
                                         </c:when>
-                                        <c:otherwise>
+                                        <c:when test="${a.status eq 2}">
                                             暂停
+                                        </c:when>
+                                        <c:otherwise>
+                                            删除
                                         </c:otherwise>
                                     </c:choose>
 
@@ -156,9 +187,13 @@
                                 <td>${a.create_date}</td>
                                 <td>${a.last_login_time}</td>
                                 <td class="td_modi">
-                                    <input type="button" value="暂停" class="btn_pause" onclick="setState();" />
-                                    <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi/${a.account_id}';" />
-                                    <input type="button" value="删除" class="btn_delete" onclick="deleteAccount(${a.account_id});" />
+                                    <c:if test="${a.status ne 3}">
+                                        <input type="button"
+                                               value="<c:if test="${a.status eq 1}">暂停</c:if><c:if test="${a.status eq 2}">开通</c:if>"
+                                               class="btn_pause" onclick="setState(${a.status},${a.account_id});" />
+                                        <input type="button" value="修改" class="btn_modify" onclick="location.href='account_modi?account_id=${a.account_id}';" />
+                                        <input type="button" value="删除" class="btn_delete" onclick="deleteAccount(${a.account_id});" />
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -169,7 +204,7 @@
                 2、暂停后，记载暂停时间；<br />
                 3、重新开通后，删除暂停时间；<br />
                 4、删除后，记载删除时间，标示为删除，不能再开通、修改、删除；<br />
-                5、暂停账务账号，同时暂停下属的所有业务账号；<br />                
+                5、暂停账务账号，同时暂停下属的所有业务账号；<br />
                 6、暂停后重新开通账务账号，并不同时开启下属的所有业务账号，需要在业务账号管理中单独开启；<br />
                 7、删除账务账号，同时删除下属的所有业务账号。</p>
                 </div>
@@ -210,6 +245,7 @@
                     </c:if>
                     <c:if test="${pageBean.pageNum<pageBean.totalPage}">
                         <a href="/account/account_list?pageNum=${pageBean.pageNum+1}">下一页</a>
+                        <a href="/account/account_list?pageNum=${pageBean.totalPage}">尾页</a>
                     </c:if>
 
                 </div>

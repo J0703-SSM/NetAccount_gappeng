@@ -15,8 +15,6 @@ public interface AccountMapper {
 
     int save(Account account);
 
-    int deleteById(Integer id);
-
     Account findById(Integer id);
 
     Account findByIdCard(String id);
@@ -24,5 +22,9 @@ public interface AccountMapper {
     Account findByRecommenderId(Integer recommender_id);
 
     int update(Account account);
+
+    int deleteAccount(Account account);
+
+    int setStauts(Account account);
 }
 

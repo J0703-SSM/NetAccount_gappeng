@@ -71,8 +71,8 @@ public class AdminController {
         return result;
     }
 
-    @RequestMapping("/admin_modi/{admin_id}")
-    public String admin_modi(@PathVariable int admin_id,Model model){
+    @RequestMapping("/admin_modi")
+    public String admin_modi( int admin_id,Model model){
         Admin admin = adminService.findAdminById(admin_id);
         List<Role> roleList = roleService.findAllRoleNoPage();
         model.addAttribute("admin",admin);

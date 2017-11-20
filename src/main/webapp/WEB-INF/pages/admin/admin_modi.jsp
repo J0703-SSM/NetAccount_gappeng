@@ -26,10 +26,13 @@
                         role_ids:role_ids
                     },success:function (result) {
                         if (result.count>0){
-                            showResultDiv(true);
-                            window.setTimeout("showResultDiv(false);", 3000);
+                            $("#save_result_info").html("保存成功");
+                            document.getElementById("save_result_info").style.display="block";
+                            window.setTimeout('location.href = "/admin/admin_list"', 3000);
                         }else {
-                            alert("保存失败")
+                            $("#save_result_fail").html("保存失败,推荐人不存在");
+                            document.getElementById("save_result_fail").style.display="block";
+                            window.setTimeout('location.href = "/account/account_modi?admin_id=' + admin_id + '"',2000);
                         }
                     }
                 })
@@ -112,7 +115,8 @@
         <!--导航区域结束-->
         <!--主要区域开始-->
         <div id="main">            
-            <div id="save_result_info" class="save_success">保存成功！</div>
+            <div id="save_result_info" class="save_success"></div>
+            <div id="save_result_fail" class="save_fail"></div>
             <form action="" method="" class="main_form">
                     <div class="text_info clearfix"><span>姓名：</span></div>
                     <div class="input_info">

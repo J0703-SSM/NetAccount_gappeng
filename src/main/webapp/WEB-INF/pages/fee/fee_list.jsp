@@ -21,10 +21,10 @@
                         cost_id:cost_id
                     },success:function (result) {
                         if (result.count>0){
-                            alert("启用成功");
-                            location.href="/fee/fee_list"
-                        }else {
-                            alert("资费已经启用");
+                            $("#operate_result_info").html("启用成功");
+                            document.getElementById("operate_result_info").style.display="block";
+                            window.setTimeout('location.href = "/fee/fee_list"', 3000);
+
                         }
                     }
 
@@ -42,11 +42,13 @@
                     },
                     success:function (result) {
                         if(result.count>0){
-                            document.getElementById("operate_result_info").style.display = "block";
-                            window.setTimeout(location.href = "/fee/fee_list", 1000000);
+                            $("#operate_result_info").html("删除成功");
+                            document.getElementById("operate_result_info").style.display="block";
+                            window.setTimeout('location.href = "/fee/fee_list"', 3000);
 
                         }else {
-                            alert("资费已经启用,无法删除")
+                           $("#operate_result_fail").html("删除失败")
+                            document.getElementById("operate_result_info").style.display="block";
                         }
                     }
                 })
@@ -70,12 +72,15 @@
             }
 
             //排序按钮的点击事件
-            function sort(btnObj) {
-                if (btnObj.className == "sort_desc")
+            function sort(btnObj,column) {
+                if (btnObj.className == "sort_desc"){
                     btnObj.className = "sort_asc";
-
-                else
+                    location.href = "/fee/fee_order?sort_name="+btnObj.className + "&column="+column+""
+                } else{
                     btnObj.className = "sort_desc";
+                    location.href = "/fee/fee_order?sort_name="+btnObj.className + "&column="+column+""
+                }
+
             }
 
         </script>        
@@ -149,16 +154,26 @@
                 <div class="search_add">
                     <div>
                         <!--<input type="button" value="月租" class="sort_asc" onclick="sort(this);" />-->
-                        <input type="button" value="基费" class="sort_asc" onclick="sort(this,'');" />
-                        <input type="button" value="时长" class="sort_asc" onclick="sort(this);" />
+                        <input type="button" value="基费"
+                               <c:if test="${cost_sort eq 'sort_asc'}">class="sort_asc"</c:if>
+                               <c:if test="${cost_sort eq 'sort_desc'}">class="sort_desc"</c:if>
+                               <c:if test="${empty cost_sort}">class="sort_asc"</c:if>
+                               onclick="sort(this,'base_cost');"/>
+                        <input type="button" value="时长"
+                               <c:if test="${date_sort eq 'sort_asc'}">class="sort_asc"</c:if>
+                               <c:if test="${date_sort eq 'sort_desc'}">class="sort_desc"</c:if>
+                               <c:if test="${empty date_sort}">class="sort_asc"</c:if>
+                               onclick="sort(this,'base_duration');" />
                     </div>
                     <input type="button" value="增加" class="btn_add" onclick="location.href='fee_add';" />
                 </div> 
                 <!--启用操作的操作提示-->
                 <div id="operate_result_info" class="operate_success">
                     <img src="../images/close.png" onclick="this.parentNode.style.display='none';" />
-                    删除成功！
-                </div>    
+                </div>
+                <div id="operate_result_fail" class="operate_fail">
+                    <img src="../images/close.png" onclick="this.parentNode.style.display='none';" />
+                </div>
                 <!--数据区域：用表格展示数据-->     
                 <div id="data">            
                     <table id="datalist">
@@ -215,64 +230,81 @@
                 </div>
                 <!--分页-->
                 <div id="pages">
-                    <c:if test="${pageBean.pageNum>1}">
-                        <a href="/fee/fee_list?pageNum=${pageBean.pageNum-1}">上一页</a>
-                    </c:if>
-                    <c:if test="${pageBean.totalPage<=5}">
-                        <c:forEach var="i" begin="1" end="${pageBean.totalPage}">
-                            <a href="/fee/fee_list?pageNum=${i}"
-                               <c:if test="${pageBean.pageNum==i}">class="current_page" </c:if>>${i}</a>
-                        </c:forEach>
-                    </c:if>
-
-
-                    <c:if test="${pageBean.totalPage>5}">
-                        <c:if test="${pageBean.pageNum <= 3}">
-                            <c:forEach var="i" begin="1" end="5">
+                    <c:if test="${empty column}">
+                        <c:if test="${pageBean.pageNum>1}">
+                            <a href="/fee/fee_list?pageNum=${1}">首页</a>
+                            <a href="/fee/fee_list?pageNum=${pageBean.pageNum-1}">上一页</a>
+                        </c:if>
+                        <c:if test="${pageBean.totalPage<=5}">
+                            <c:forEach var="i" begin="1" end="${pageBean.totalPage}">
                                 <a href="/fee/fee_list?pageNum=${i}"
                                    <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
                             </c:forEach>
                         </c:if>
+                        <c:if test="${pageBean.totalPage>5}">
+                            <c:if test="${pageBean.pageNum <= 3}">
+                                <c:forEach var="i" begin="1" end="5">
+                                    <a href="/fee/fee_list?pageNum=${i}"
+                                       <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum <= pageBean.totalPage -3}">
+                                <c:forEach var="i" begin="${pageBean.pageNum-2}" end="${pageBean.pageNum+2}">
+                                    <a href="/fee/fee_list?pageNum=${i}"
+                                       <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum > pageBean.totalPage-3}">
+                                <c:forEach var="i" begin="${pageBean.totalPage-4}" end="${pageBean.totalPage}">
+                                    <a href="/fee/fee_list?pageNum=${i}"
+                                       <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
+                                </c:forEach>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${pageBean.pageNum<pageBean.totalPage}">
+                            <a href="/fee/fee_list?pageNum=${pageBean.pageNum+1}">下一页</a>
+                            <a href="/fee/fee_list?pageNum=${pageBean.totalPage}">尾页</a>
+                        </c:if>
+                    </c:if>
 
-                        <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum <= pageBean.totalPage -3}">
-                            <c:forEach var="i" begin="${pageBean.pageNum-2}" end="${pageBean.pageNum+2}">
-                                <a href="/fee/fee_list?pageNum=${i}"
+                    <c:if test="${not empty column}">
+                        <c:if test="${pageBean.pageNum>1}">
+                            <a href="/fee/fee_order?pageNum=${1}&sort_name=${sort_name}&column=${column}">首页</a>
+                            <a href="/fee/fee_order?pageNum=${pageBean.pageNum-1}&sort_name=${sort_name}&column=${column}">上一页</a>
+                        </c:if>
+                        <c:if test="${pageBean.totalPage<=5}">
+                            <c:forEach var="i" begin="1" end="${pageBean.totalPage}">
+                                <a href="/fee/fee_order?pageNum=${i}&sort_name=${sort_name}&column=${column}"
                                    <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
                             </c:forEach>
                         </c:if>
-                        <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum > pageBean.totalPage-3}">
-                            <c:forEach var="i" begin="${pageBean.totalPage-4}" end="${pageBean.totalPage}">
-                                <a href="/fee/fee_list?pageNum=${i}"
-                                   <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
-                            </c:forEach>
+                        <c:if test="${pageBean.totalPage>5}">
+                            <c:if test="${pageBean.pageNum <= 3}">
+                                <c:forEach var="i" begin="1" end="5">
+                                    <a href="/fee/fee_order?pageNum=${i}&sort_name=${sort_name}&column=${column}"
+                                       <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum <= pageBean.totalPage -3}">
+                                <c:forEach var="i" begin="${pageBean.pageNum-2}" end="${pageBean.pageNum+2}">
+                                    <a href="/fee/fee_order?pageNum=${i}&sort_name=${sort_name}&column=${column}"
+                                       <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${pageBean.pageNum > 3 and pageBean.pageNum > pageBean.totalPage-3}">
+                                <c:forEach var="i" begin="${pageBean.totalPage-4}" end="${pageBean.totalPage}">
+                                    <a href="/fee/fee_order?pageNum=${i}&sort_name=${sort_name}&column=${column}"
+                                       <c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>
+                                </c:forEach>
+                            </c:if>
                         </c:if>
-
-                        <%--<c:if test="${pageBean.totalPage>5}">--%>
-                            <%--<c:if test="${pageBean.pageNum <= 3}">--%>
-                                <%--<c:forEach var="i" begin="1" end="5">--%>
-                                    <%--<a href="/cost_order?pageNum=${i}&sort=${sort}&column=${column}"--%>
-                                       <%--<c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>--%>
-                                <%--</c:forEach>--%>
-                            <%--</c:if>--%>
-                            <%--<c:if test="${pageBean.pageNum > 3 and pageBean.pageNum <= pageBean.totalPage -3}">--%>
-                                <%--<c:forEach var="i" begin="${pageBean.pageNum-2}" end="${pageBean.pageNum+2}">--%>
-                                    <%--<a href="/cost_order?pageNum=${i}&sort=${sort}&column=${column}"--%>
-                                       <%--<c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>--%>
-                                <%--</c:forEach>--%>
-                            <%--</c:if>--%>
-                            <%--<c:if test="${pageBean.pageNum > 3 and pageBean.pageNum > pageBean.totalPage-3}">--%>
-                                <%--<c:forEach var="i" begin="${pageBean.totalPage-4}" end="${pageBean.totalPage}">--%>
-                                    <%--<a href="/cost_order?pageNum=${i}&sort=${sort}&column=${column}"--%>
-                                       <%--<c:if test="${pageBean.pageNum == i}">class="current_page"</c:if> >${i}</a>--%>
-                                <%--</c:forEach>--%>
-                            <%--</c:if>--%>
-                        <%--</c:if>--%>
+                        <c:if test="${pageBean.pageNum<pageBean.totalPage}">
+                            <a href="/fee/fee_order?pageNum=${pageBean.pageNum+1}&sort_name=${sort_name}&column=${column}">下一页</a>
+                            <a href="/fee/fee_order?pageNum=${pageBean.totalPage}&sort_name=${sort_name}&column=${column}">尾页</a>
+                        </c:if>
                     </c:if>
-                    <c:if test="${pageBean.pageNum<pageBean.totalPage}">
-                        <a href="/fee/fee_list?pageNum=${pageBean.pageNum+1}">下一页</a>
-                    </c:if>
-
                 </div>
+
             </form>
         </div>
         <!--主要区域结束-->

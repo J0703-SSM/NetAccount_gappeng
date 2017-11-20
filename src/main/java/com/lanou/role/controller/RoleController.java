@@ -71,8 +71,8 @@ public class RoleController {
         return result;
     }
 
-    @RequestMapping("/role_modi/{role_id}")
-    public String role_modi(@PathVariable int role_id, Model model){
+    @RequestMapping("/role_modi")
+    public String role_modi(int role_id, Model model){
         Role role = roleService.findByRoleId(role_id);
         List<Module> moduleList = moduleService.findAllModule();
         System.out.println(role);
@@ -86,10 +86,10 @@ public class RoleController {
     @ResponseBody
     @RequestMapping("/role_modisave")
     public AjaxResult<Role> modisave(@RequestParam(value = "moduleIds[]") Integer[] moduleIds,
-                                     Integer role_id){
+                                     Role role){
         AjaxResult<Role> result = new AjaxResult<Role>();
 
-        List<RoleModule> roleModules = roleService.updateRoleModule(role_id, moduleIds);
+        List<RoleModule> roleModules = roleService.updateRoleModule(role, moduleIds);
 
         if (roleModules!=null && roleModules.size()>0){
          result.setCount(1);

@@ -25,8 +25,9 @@
                     },
                     success:function(result) {
                         if (result.count>0){
-                            showResultDiv(true);
-                            window.setTimeout(showResultDiv(false), 3000);
+                            $("#save_result_info").html("保存成功");
+                            document.getElementById("save_result_info").style.display="block";
+                            window.setTimeout('location.href = "/fee/fee_list"', 3000);
                         }else {
                             $("#nameErr").html(result.maps["namemsg"]);
                             $("#durationErr").html(result.maps["durationmsg"]);
@@ -146,7 +147,8 @@
         <!--导航区域结束-->
         <!--主要区域开始-->
         <div id="main">            
-            <div id="save_result_info" class="save_success">保存成功!</div>
+            <div id="save_result_info" class="save_success"></div>
+            <div id="save_result_fail" class="save_fail"></div>
 
             <form action="" method="" class="main_form">
                 <div class="text_info clearfix"><span>资费ID：</span></div>

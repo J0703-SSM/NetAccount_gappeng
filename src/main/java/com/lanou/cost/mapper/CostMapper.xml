@@ -76,4 +76,10 @@
         UPDATE cost SET status = 1, startTime= #{startTime} WHERE cost_id = #{cost_id}
     </update>
 
+    <!--排序查询-->
+    <select id="findByOrder"
+            parameterType="com.lanou.util.PageBean"
+            resultType="com.lanou.cost.domain.Cost">
+        SELECT * FROM cost ORDER BY ${column} ${condition} limit #{pageSize} offset #{startIndex}
+    </select>
 </mapper>

@@ -33,10 +33,13 @@
                    admin_id:admin_id
                 },success:function (result) {
                     if(result.count > 0){
-                        alert("删除成功");
-                        location.href = "/admin/admin_list";
+                        $("#operate_result_info").html("删除成功");
+                        document.getElementById("operate_result_info").style.display="block";
+                        window.setTimeout('location.href = "/admin/admin_list"', 3000);
                     }else{
-                        document.getElementById("operate_result_info").style.display = "block" ;
+                        $("#operate_result_fail").html("删除失败");
+                        document.getElementById("operate_result_fail").style.display="block";
+
                     }
                 }
             })
@@ -141,9 +144,12 @@
             <input type="button" value="增加" class="btn_add" onclick="location.href='admin_add';"/>
         </div>
         <!--删除和密码重置的操作提示-->
-        <div id="operate_result_info" class="operate_fail">
+        <div id="operate_result_info" class="operate_success">
             <img src="../images/close.png" onclick="this.parentNode.style.display='none';"/>
-            <span>删除失败！数据并发错误。</span>
+
+        </div>
+        <div id="operate_result_fail" class="operate_fail">
+            <img src="../images/close.png" onclick="this.parentNode.style.display='none';"/>
         </div>
         <!--数据区域：用表格展示数据-->
         <div id="data">
@@ -199,7 +205,7 @@
                              </c:choose>
                          </td>
                          <td class="td_modi">
-                             <input type="button" value="修改" class="btn_modify" onclick="location.href='admin_modi/${admin.admin_id}';"/>
+                             <input type="button" value="修改" class="btn_modify" onclick="location.href='admin_modi?admin_id=${admin.admin_id}';"/>
                              <input type="button" value="删除" class="btn_delete" onclick="deleteAdmin(${admin.admin_id});"/>
                          </td>
                      </tr>
@@ -245,6 +251,7 @@
             </c:if>
             <c:if test="${pageBean.pageNum<pageBean.totalPage}">
                 <a href="/admin/admin_list?pageNum=${pageBean.pageNum+1}">下一页</a>
+                <a href="/admin/admin_list?pageNum=${pageBean.totalPage}">尾页</a>
             </c:if>
         </div>
     </form>

@@ -22,4 +22,7 @@ public interface CostMapper {
     int startCost(Cost cost);
 
     int findCount();
+
+
+    List<Cost> findByOrder(PageBean<Cost> pageBean);
 }

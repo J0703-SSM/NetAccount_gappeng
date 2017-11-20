@@ -30,9 +30,6 @@ public class AccountServiceImpl implements AccountService{
 
     }
 
-    public int deleteById(Integer id) {
-        return accountMapper.deleteById(id);
-    }
 
     public Account findById(Integer id) {
         return accountMapper.findById(id);
@@ -48,5 +45,13 @@ public class AccountServiceImpl implements AccountService{
 
     public int update(Account account) {
         return accountMapper.update(account);
+    }
+
+    public int deleteAccount(Account account) {
+        return accountMapper.deleteAccount(account);
+    }
+
+    public int setStauts(Account account) {
+        return accountMapper.setStauts(account);
     }
 }

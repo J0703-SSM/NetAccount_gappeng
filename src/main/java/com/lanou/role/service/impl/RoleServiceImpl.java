@@ -78,15 +78,15 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.findRoleAndModuleById(role_id);
     }
 
-    public List<RoleModule> updateRoleModule(Integer role_id, Integer[] moduleIds) {
+    public List<RoleModule> updateRoleModule(Role role, Integer[] moduleIds) {
+        int role_id = role.getRole_id();
+        roleMapper.updateRoleById(role);
         int delCount = roleModuleMapper.deleteModuleByRoleId(role_id);
         List<RoleModule> roleModules = new ArrayList<RoleModule>();
         for (Integer moduleId : moduleIds) {
             RoleModule roleModule = new RoleModule(role_id,moduleId);
-
             roleModules.add(roleModule);
         }
-
         roleModuleMapper.saveRoleModuleBatch(roleModules);
         return roleModules;
     }
