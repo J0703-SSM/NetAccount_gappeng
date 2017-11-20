@@ -74,4 +74,19 @@
         <property name="basePackage" value="com.lanou.*.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
     </bean>
+    
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/index"/>
+            <mvc:mapping path="/admin/admin*"/>
+            <mvc:mapping path="/role/role*"/>
+            <mvc:mapping path="/cost/cost*"/>
+            <mvc:mapping path="/account/account*"/>
+            <mvc:mapping path="/bill/bill*"/>
+            <mvc:mapping path="/report/report*"/>
+            <mvc:mapping path="/service/service*"/>
+            <bean class="com.lanou.base.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

@@ -82,8 +82,19 @@
 
     <select id="findByAdmin"
             parameterType="com.lanou.admin.domain.Admin"
-             resultMap="BaseResultMap">
-        SELECT * FROM admin_info WHERE admin_code=#{admin_code} AND password=#{password}
+             resultMap="ExpResultMap">
+        SELECT a.admin_id,a.admin_code,a.name,a.telephone,a.email,a.enrolldate,
+        r.role_id rid,r.name rname,
+        m.module_id mid,m.name mname
+        FROM admin_info a LEFT JOIN admin_role ar
+        ON a.admin_id = ar.admin_id
+        LEFT JOIN role_info r
+        ON ar.role_id = r.role_id
+        LEFT JOIN role_module rm
+        ON r.role_id = rm.role_id
+        LEFT JOIN module_info m
+        ON rm.module_id = m.module_id
+        WHERE admin_code=#{admin_code} AND password=#{password}
     </select>
 
     <select id="findAdminByCodeAndPasw"

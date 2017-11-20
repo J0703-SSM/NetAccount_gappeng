@@ -42,7 +42,6 @@
     <script>
          $("#admin_code").blur(function () {
              if($("#admin_code").val().length >0){
-                 alert(1)
                  $.ajax({
                      type:"post",
                      url:"/checkAdmin",

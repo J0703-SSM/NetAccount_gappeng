@@ -1,24 +1,21 @@
 package com.lanou.base.controller;
-
 import com.lanou.admin.domain.Admin;
 import com.lanou.admin.service.AdminService;
+import com.lanou.module.domain.Module;
+import com.lanou.role.domain.Role;
 import com.lanou.util.AjaxResult;
 import com.lanou.util.VerifyCode;
-
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dllo on 17/11/14.
@@ -56,12 +53,32 @@ public class baseController {
                              HttpServletRequest request,
                              Model model) {
         String verifyCode = (String) request.getSession().getAttribute("verifyCode");
-        System.out.println(verifyCode);
+
         String verifyCode1 = admin.getVerifyCode();
-        System.out.println(verifyCode1);
+
         Admin admin1 = adminService.findBydmin(admin);
 
         if (verifyCode.equalsIgnoreCase(verifyCode1) && admin1 != null) {
+//            List<Module> list = new ArrayList<Module>();
+//            for (Role role : admin1.getRoles()) {
+//                List<Module> modules = role.getModules();
+//                list.addAll(modules);
+//            }
+//            for (int i = 0; i < list.size(); i++) {
+//                for (int j = list.size()-1; j > i; j--) {
+//                    if (list.get(j).getModule_id() == list.get(i).getModule_id()){
+//                        list.remove(j);
+//                    }
+//                }
+//            }
+//            List<Role> roles = admin1.getRoles();
+//            if (roles.size()>0){
+//                for (int i = 0; i <roles.size(); i++) {
+//                    roles.get(i).setModules(new ArrayList<Module>());
+//                }
+//                roles.get(0).setModules(list);
+//            }
+            request.getServletContext().setAttribute("admin",admin1);
             return "index";
         }
         if (admin1 == null) {
