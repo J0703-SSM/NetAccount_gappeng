@@ -224,7 +224,7 @@ public class CostController {
 
         if (cost.getCost_type().equals("1")) {
             if (cost.getBase_cost() == 0 || 99999.99 < cost.getBase_cost()) {
-                maps.put("base_cost", "0-99999.99之间的数值");
+                maps.put("costmsg", "0-99999.99之间的数值");
                 ajaxCostResult.setCount(0);
             }
         }

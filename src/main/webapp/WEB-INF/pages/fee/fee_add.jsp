@@ -27,11 +27,31 @@
                             document.getElementById("save_result_info").style.display="block";
                             window.setTimeout('location.href = "/fee/fee_list"', 3000);
                         }else {
-                            $("#nameErr").html(result.maps["namemsg"]);
-                            $("#durationErr").html(result.maps["durationmsg"]);
-                            $("#costErr").html(result.maps["costmsg"]);
-                            $("#ucostErr").html(result.maps["ucostmsg"]);
-                            $("#descErr").html(result.maps["descmsg"])
+                            if (result.maps["namemsg"]!=null){
+                                $("#nameErr").css('display','block')
+                            }else {
+                                $("#nameErr").css('display','none')
+                            }
+                            if (result.maps["durationmsg"]!=null){
+                                $("#durationErr").css('display','block')
+                            }else {
+                                $("#durationErr").css('display','none')
+                            }
+                            if (result.maps["costmsg"]!=null){
+                                $("#costErr").css('display','block')
+                            }else {
+                                $("#costErr").css('display','none')
+                            }
+                            if (result.maps["ucostmsg"]!=null){
+                                $("#ucostErr").css('display','block')
+                            }else {
+                                $("#ucostErr").css('display','none')
+                            }
+                            if (result.maps["descmsg"]!=null){
+                                $("#descErr").css('display','block')
+                            }else {
+                                $("#descErr").css('display','none')
+                            }
 
                         }
                     }
@@ -143,7 +163,7 @@
                 <div class="text_info clearfix"><span>资费名称：</span></div>
                 <div class="input_info">
                     <input type="text" class="width300" id="name" />
-                    <div id="nameErr" class="validate_msg_short"></div>
+                    <div id="nameErr"class="validate_msg_short error_msg" style="display: none">50长度的字母、数字、汉字和下划线的组合</div>
                 </div>
                 <div class="text_info clearfix"><span>资费类型：</span></div>
                 <div class="input_info fee_type">
@@ -158,24 +178,24 @@
                 <div class="input_info">
                     <input type="text" id="base_duration" class="width100" />
                     <span class="info">小时</span>
-                    <div  id="durationErr"  class="validate_msg_long"></div>
+                    <div id="durationErr" style="display: none" class="validate_msg_short error_msg">1-600之间的整数</div>
                 </div>
                 <div class="text_info clearfix"><span>基本费用：</span></div>
                 <div class="input_info">
                     <input type="text" id="base_cost" class="width100" />
                     <span class="info">元</span>
-                    <div  id="costErr" class="validate_msg_long"></div>
+                    <div  id="costErr" class="validate_msg_short error_msg" style="display: none">0-99999.99之间的数值</div>
                 </div>
                 <div class="text_info clearfix"><span>单位费用：</span></div>
                 <div class="input_info">
                     <input type="text" id="unit_cost" class="width100" />
                     <span class="info">元/小时</span>
-                    <div id="ucostErr" class="validate_msg_long"></div>
+                    <div id="ucostErr" class="validate_msg_long error_msg" style="display: none">0-99999.99之间的数值</div>
                 </div>
                 <div class="text_info clearfix"><span>资费说明：</span></div>
                 <div class="input_info_high">
                     <textarea class="width300 height70" id="descr"></textarea>
-                    <div id="descErr" class="validate_msg_short"></div>
+                    <div id="descErr" class="validate_msg_long error_msg" style="display: none">100长度的字母、数字、汉字和下划线的组合</div>
                 </div>                    
                 <div class="button_info clearfix">
                     <input type="button" value="保存" class="btn_save" onclick="showResult();"/>
