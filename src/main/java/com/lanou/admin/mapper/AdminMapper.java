@@ -29,4 +29,6 @@ public interface AdminMapper {
     Admin findByAdmin(Admin admin);
 
     Admin findAdminByCodeAndPasw(String admin_code, String password);
+
+    int resetPwd(Admin admin);
 }

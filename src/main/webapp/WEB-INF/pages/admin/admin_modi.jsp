@@ -41,14 +41,7 @@
 
 
             }
-            function showResultDiv(flag) {
-                var divResult = document.getElementById("save_result_info");
-                if (flag){
-                    divResult.style.display = "block";
-                    location.href = "/admin/admin_list";
-                }else
-                    divResult.style.display = "none";
-            }
+
         </script>
     </head>
     <body>

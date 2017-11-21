@@ -86,7 +86,20 @@ public class AdminController {
         AjaxResult<Admin> result = new AjaxResult<Admin>();
         int count = adminService.updateAdminRole(admin, role_ids);
         result.setCount(count);
-
         return result;
+    }
+    @ResponseBody
+    @RequestMapping("/admin_resetPwd")
+    public AjaxResult<Admin> admin_resetPwd(@RequestParam(value = "pwd_ids[]") Integer[] pwd_ids){
+        AjaxResult<Admin> result = new AjaxResult<Admin>();
+        Admin admin = new Admin();
+        admin.setPassword("111");
+        for (Integer admin_id : pwd_ids) {
+            admin.setAdmin_id(admin_id);
+            int count = adminService.resetPwd(admin);
+            result.setCount(count);
+        }
+        return result;
+
     }
 }

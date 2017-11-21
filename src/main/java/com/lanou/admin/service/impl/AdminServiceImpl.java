@@ -104,4 +104,11 @@ public class AdminServiceImpl implements AdminService {
        return adminMapper.findAdminByCodeAndPasw(admin_code,password);
 
     }
+
+    public int resetPwd(Admin admin) {
+
+        return adminMapper.resetPwd(admin);
+    }
+
+
 }

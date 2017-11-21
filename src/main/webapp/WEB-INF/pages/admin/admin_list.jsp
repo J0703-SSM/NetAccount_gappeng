@@ -19,10 +19,33 @@
             else
                 detailDiv.style.display = "none";
         }
+
         //重置密码
         function resetPwd() {
-            alert("请至少选择一条数据！");
-            //document.getElementById("operate_result_info").style.display = "block";
+            if ($(":checkbox:checked").length==0){
+                alert("请至少选择一条数据！");
+            }else {
+                var pwd_ids=[];
+                $(":checkbox:checked").each(function () {
+                    pwd_ids.push($(this).val())
+                })
+                $.ajax({
+                    type:"post",
+                    url:"/admin/admin_resetPwd",
+                    data:{
+                        pwd_ids:pwd_ids
+                    },success:function (result) {
+                        if (result.count>0){
+                            $("#operate_result_info").html("修改成功");
+                            document.getElementById("operate_result_info").style.display="block";
+                            window.setTimeout('location.href = "/admin/admin_list"', 3000);
+                        }else {
+                            $("#operate_result_fail").html("修改失败");
+                            document.getElementById("operate_result_fail").style.display="block";
+                        }
+                    }
+                })
+            }
         }
         //删除
         function deleteAdmin(admin_id) {
@@ -156,7 +179,7 @@
             <table id="datalist">
                 <tr>
                     <th class="th_select_all">
-                        <input type="checkbox" onclick="selectAdmins(this);"/>
+                        <input value="-1" type="checkbox" onclick="selectAdmins(this);"/>
                         <span>全选</span>
                     </th>
                     <th>管理员ID</th>
@@ -170,7 +193,7 @@
                 </tr>
                 <c:forEach items="${pageBean.data}" var="admin">
                      <tr>
-                         <td><input type="checkbox"/></td>
+                         <td><input value="${admin.admin_id}" type="checkbox"/></td>
                          <td>${admin.admin_id}</td>
                          <td>${admin.name}</td>
                          <td>${admin.admin_code}</td>

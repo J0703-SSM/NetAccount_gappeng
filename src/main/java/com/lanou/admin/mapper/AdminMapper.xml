@@ -102,4 +102,9 @@
             resultMap="BaseResultMap">
          SELECT * FROM admin_info WHERE admin_code=#{admin_code} AND password=#{password}
     </select>
+
+    <update id="resetPwd"
+            parameterType="com.lanou.admin.domain.Admin">
+        UPDATE admin_info SET password=#{password} WHERE admin_id=#{admin_id}
+    </update>
 </mapper>

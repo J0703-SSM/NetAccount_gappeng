@@ -25,4 +25,6 @@ public interface AdminService {
     Admin findBydmin(Admin admin);
 
     Admin findAdminByCodeAndPasw(String admin_code, String password);
+
+    int resetPwd(Admin admin);
 }
