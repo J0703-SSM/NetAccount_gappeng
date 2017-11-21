@@ -26,5 +26,9 @@ public interface AccountMapper {
     int deleteAccount(Account account);
 
     int setStauts(Account account);
+
+    int findAccountCount(Account account);
+
+    List<Account> findAllAccount(PageBean<Account> pageBean);
 }
 

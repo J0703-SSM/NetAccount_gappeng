@@ -23,4 +23,6 @@ public interface AccountService {
     int deleteAccount(Account account);
 
     int setStauts(Account account);
+
+    PageBean<Account> findAllAccount(Integer pageNum, int pageSize, Account account);
 }

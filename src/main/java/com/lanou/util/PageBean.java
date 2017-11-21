@@ -14,19 +14,41 @@ public class PageBean<T> {
     private String condition; //条件
     private String column;
     private List<T> data;
+    private int id;
+    private T t;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {
         return "PageBean{" +
-                ", pageNum=" + pageNum +
+                "pageNum=" + pageNum +
                 ", pageSize=" + pageSize +
                 ", totalCount=" + totalCount +
                 ", startIndex=" + startIndex +
                 ", totalPage=" + totalPage +
+                ", condition='" + condition + '\'' +
+                ", column='" + column + '\'' +
+                ", data=" + data +
+                ", id=" + id +
                 '}';
     }
 
     public PageBean() {
+    }
+
+    public PageBean(int pageNum, int pageSize, int totalCount, String condition, int id) {
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+        this.totalCount = totalCount;
+        this.condition = condition;
+        this.id = id;
     }
 
     public PageBean(int pageNum, int pageSize, int totalCount) {
@@ -118,6 +140,14 @@ public class PageBean<T> {
 
     public void setData(List<T> data) {
         this.data = data;
+    }
+
+    public T getT() {
+        return t;
+    }
+
+    public void setT(T t) {
+        this.t = t;
     }
 }
 

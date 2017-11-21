@@ -107,4 +107,57 @@
             parameterType="com.lanou.admin.domain.Admin">
         UPDATE admin_info SET password=#{password} WHERE admin_id=#{admin_id}
     </update>
+
+    <select id="findCountByQuery"
+            parameterType="com.lanou.util.PageBean"
+            resultType="int">
+        SELECT count(*)
+        FROM admin_info a
+        LEFT JOIN admin_role ar
+        ON a.admin_id = ar.admin_id
+        LEFT JOIN role_info r
+        ON ar.role_id=r.role_id
+        LEFT JOIN role_module rm
+        ON r.role_id = rm.role_id
+        LEFT JOIN module_info m
+        ON rm.module_id= m.module_id
+        <where>
+            1=1
+            <if test="id!= -1">
+                AND m.module_id=#{id}
+            </if>
+            <if test="condition!=null and condition.length>0">
+                AND r.name LIKE "%"#{condition}"%"
+            </if>
+        </where>
+    </select>
+
+    <select id="findAdminByQuery"
+            parameterType="com.lanou.util.PageBean"
+            resultMap="ExpResultMap">
+        SELECT * FROM
+        (SELECT a.admin_id,a.admin_code,a.name,a.telephone,a.email,a.enrolldate,
+         r.role_id rid,r.name rname,
+         m.module_id mid,m.name mname
+         FROM admin_info a LEFT JOIN admin_role ar
+         ON a.admin_id = ar.admin_id
+         LEFT JOIN role_info r
+         ON ar.role_id = r.role_id
+         LEFT JOIN role_module rm
+         ON r.role_id = rm.role_id
+         LEFT JOIN module_info m
+         ON rm.module_id = m.module_id
+         <where>
+             1=1
+             <if test="id != -1">
+                 AND m.module_id=#{id}
+             </if>
+             <if test="condition!=null and condition.length>0">
+                 AND r.name LIKE "%"#{codition}"%"
+             </if>
+         </where>
+         ) admin_role_module limit #{pageSize} offset #{startIndex}
+    </select>
+
+
 </mapper>

@@ -31,4 +31,8 @@ public interface AdminMapper {
     Admin findAdminByCodeAndPasw(String admin_code, String password);
 
     int resetPwd(Admin admin);
+
+    int findCountByQuery(PageBean<Admin> pageBean);
+
+    List<Admin> findAdminByQuery(PageBean<Admin> pageBean1);
 }

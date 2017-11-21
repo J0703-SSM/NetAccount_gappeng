@@ -163,6 +163,24 @@ public class AccountController {
         return result;
     }
 
+    @RequestMapping("/account_query")
+    public String account_query(Integer pageNum,Account account,Model model){
+        if (account.getStatus()==null){
+            account.setStatus("-1");
+        }
+        model.addAttribute("idcard_no",account.getIdcard_no());
+        model.addAttribute("real_name",account.getReal_name());
+        model.addAttribute("login_name",account.getLogin_name());
+        model.addAttribute("status",account.getStatus());
+
+        if (pageNum==null){
+            pageNum=1;
+        }
+        PageBean<Account> pageBean = accountService.findAllAccount(pageNum, pageSize, account);
+        model.addAttribute("pageBean",pageBean);
+        return "account/account_list";
+    }
+
 
     public String getBirthday(String id){
         if (id.length()==18){

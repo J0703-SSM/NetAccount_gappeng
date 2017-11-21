@@ -13,22 +13,17 @@ import java.util.List;
  */
 public class Admin {
     private int admin_id;
-    @Length(min = 1,max = 30,message = "30长度的字母、数字和下划线")
+
     private String admin_code;
 
-    @Length(min = 1,max = 30,message = "30长度的字母、数字和下划线")
     private String password;
 
-    @Length(min = 1,max = 30,message = "30长度的字母、数字和下划线")
     private String name;
-    @Pattern(regexp = "^1[34578]\\d{9}$",message = "请输入正确的电话号码格式")
+
     private String telephone;
-    @Email(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",message = "请输入正确的邮箱")
+
     private String email;
-
     private Timestamp enrolldate;
-
-    @Length(min = 1,max = 30,message = "30长度的字母、数字和下划线")
     private String repassword;
 
     private String verifyCode;

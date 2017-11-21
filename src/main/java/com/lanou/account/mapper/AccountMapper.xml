@@ -56,5 +56,47 @@
         UPDATE account SET status=#{status},pause_date=#{pause_date} WHERE account_id=#{account_id}
     </update>
 
+    <select id="findAccountCount"
+            parameterType="com.lanou.account.domain.Account"
+            resultType="int">
+        SELECT count(*) FROM account
+        <where>
+            1=1
+            <if test="idcard_no!=null">
+                AND idcard_no LIKE "%"#{idcard_no}"%"
+            </if>
+            <if test="real_name!=null">
+                AND real_name LIKE "%"#{real_name}"%"
+            </if>
+            <if test="login_name!=null">
+                AND login_name LIKE "%"#{login_name}"%"
+            </if>
+            <if test="status!=-1">
+                AND status=#{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAllAccount"
+            parameterType="com.lanou.util.PageBean"
+            resultType="com.lanou.account.domain.Account">
+        SELECT * FROM account
+        <where>
+            1=1
+            <if test="t.idcard_no!=null">
+                AND idcard_no LIKE "%"#{t.idcard_no}"%"
+            </if>
+            <if test="t.real_name!=null">
+                AND real_name LIKE "%"#{t.real_name}"%"
+            </if>
+            <if test="t.login_name!=null">
+                AND login_name LIKE "%"#{t.login_name}"%"
+            </if>
+            <if test="t.status!=-1">
+                AND status=#{t.status}
+            </if>
+        </where> limit #{pageSize} offset #{startIndex}
+    </select>
+
 
 </mapper>

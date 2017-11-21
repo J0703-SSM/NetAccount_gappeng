@@ -3,6 +3,8 @@ package com.lanou.admin.controller;
 import com.lanou.admin.domain.Admin;
 import com.lanou.admin.domain.AdminRole;
 import com.lanou.admin.service.AdminService;
+import com.lanou.module.domain.Module;
+import com.lanou.module.service.ModuleService;
 import com.lanou.role.domain.Role;
 import com.lanou.role.service.RoleService;
 import com.lanou.util.AjaxResult;
@@ -31,6 +33,9 @@ public class AdminController {
     @Resource
     private RoleService roleService;
 
+    @Resource
+    private ModuleService moduleService;
+
 
 
     private int pageSize=3;
@@ -42,6 +47,8 @@ public class AdminController {
         }
         PageBean<Admin> pageBean = adminService.findAllAdmin(pageNum, pageSize);
         model.addAttribute("pageBean",pageBean);
+        List<Module> modules = moduleService.findAllModule();
+        model.addAttribute("modules",modules);
         return "admin/admin_list";
     }
 
@@ -101,5 +108,29 @@ public class AdminController {
         }
         return result;
 
+    }
+    @RequestMapping("/admin_query")
+    public String admin_query(Integer pageNum,Integer module_id,String role_name,Model model){
+        if (module_id ==null){
+            module_id=-1;
+        }
+        if (role_name==null){
+            role_name="";
+        }
+        model.addAttribute("module_id",module_id);
+        model.addAttribute("role_name",role_name);
+        if (pageNum==null){
+            pageNum=1;
+        }
+        if(module_id==-1 && role_name.trim().length()==0){
+            admin_list(pageNum,model);
+        }else {
+            PageBean<Admin> pageBean = adminService.findAdminByQuery(pageNum, pageSize, module_id, role_name);
+            model.addAttribute("pageBean", pageBean);
+        }
+        List<Module> modules = moduleService.findAllModule();
+        System.out.println(modules);
+        model.addAttribute("modules",modules);
+        return "admin/admin_list";
     }
 }

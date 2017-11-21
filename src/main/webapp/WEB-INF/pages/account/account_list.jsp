@@ -126,22 +126,24 @@
         <!--导航区域结束-->
         <!--主要区域开始-->
         <div id="main">
-            <form action="" method="">
+
                 <!--查询-->
                 <div class="search_add">
-                    <div>身份证：<input type="text" value="不验证" class="text_search" /></div>
-                    <div>姓名：<input type="text" class="width70 text_search" value="不验证" /></div>
-                    <div>登录名：<input type="text"  value="不验证" class="text_search" /></div>
+                <form action="/account/account_query" method="post">
+                    <div>身份证：<input type="text" value="${idcard_no}" name="idcard_no" class="text_search" /></div>
+                    <div>姓名：<input type="text" class="width70 text_search" name="real_name" value="${real_name}" /></div>
+                    <div>登录名：<input type="text"  value="${login_name}" name="login_name" class="text_search" /></div>
                     <div>
                         状态：
-                        <select class="select_search">
-                            <option>全部</option>
-                            <option>开通</option>
-                            <option>暂停</option>
-                            <option>删除</option>
+                        <select class="select_search" name="status">
+                            <option <c:if test="${status eq -1}">selected</c:if> value="-1">全部</option>
+                            <option <c:if test="${status eq 1}">selected</c:if> value="1">开通</option>
+                            <option <c:if test="${status eq 2}">selected</c:if> value="2">暂停</option>
+                            <option <c:if test="${status eq 3}">selected</c:if> value="3">删除</option>
                         </select>
                     </div>
-                    <div><input type="button" value="搜索" class="btn_search" /></div>
+                    <div><input type="submit" value="搜索" class="btn_search" /></div>
+            </form>
                     <input type="button" value="增加" class="btn_add" onclick="location.href='account_add';" />
                 </div>
                 <!--删除等的操作提示-->
@@ -249,7 +251,7 @@
                     </c:if>
 
                 </div>
-            </form>
+
         </div>
         <!--主要区域结束-->
         <div id="footer">

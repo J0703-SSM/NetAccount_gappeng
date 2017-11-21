@@ -27,4 +27,6 @@ public interface AdminService {
     Admin findAdminByCodeAndPasw(String admin_code, String password);
 
     int resetPwd(Admin admin);
+
+    PageBean<Admin> findAdminByQuery(Integer pageNum, int pageSize, Integer module_id, String role_name);
 }

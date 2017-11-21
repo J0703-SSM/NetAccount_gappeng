@@ -110,5 +110,18 @@ public class AdminServiceImpl implements AdminService {
         return adminMapper.resetPwd(admin);
     }
 
+    public PageBean<Admin> findAdminByQuery(Integer pageNum, int pageSize, Integer module_id, String role_name) {
+        PageBean<Admin> pageBean = new PageBean<Admin>();
+        pageBean.setId(module_id);
+        pageBean.setCondition(role_name);
+        int totalCount = adminMapper.findCountByQuery(pageBean);
+        PageBean<Admin> pageBean1 = new PageBean<Admin>(pageNum,pageSize,totalCount);
+        pageBean1.setId(module_id);
+        pageBean.setCondition(role_name);
+        List<Admin> admins = adminMapper.findAdminByQuery(pageBean1);
+        pageBean1.setData(admins);
+        return pageBean1;
+    }
+
 
 }

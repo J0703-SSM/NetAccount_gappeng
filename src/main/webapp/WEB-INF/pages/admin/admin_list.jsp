@@ -145,24 +145,24 @@
 <!--导航区域结束-->
 <!--主要区域开始-->
 <div id="main">
-    <form action="" method="">
+
         <!--查询-->
         <div class="search_add">
+            <form action="/admin/admin_query" method="post">
             <div>
                 模块：
-                <select id="selModules" class="select_search">
-                    <option>全部</option>
-                    <option>角色管理</option>
-                    <option>管理员管理</option>
-                    <option>资费管理</option>
-                    <option>账务账号</option>
-                    <option>业务账号</option>
-                    <option>账单管理</option>
-                    <option>报表</option>
+                <select id="selModules" name="module_id" class="select_search">
+                    <option value="-1">全部</option>
+                    <c:forEach items="${modules}" var="module">
+                        <option <c:if test="${module_id eq module.module_id}">selected</c:if> value="${module.module_id}">
+                        ${module.name}
+                        </option>
+                    </c:forEach>
                 </select>
             </div>
-            <div>角色：<input type="text" value="" class="text_search width200"/></div>
-            <div><input type="button" value="搜索" class="btn_search"/></div>
+            <div>角色：<input type="text" value="${role_name}" name="role_name" placeholder="请输入角色" class="text_search width200"/></div>
+            <div><input type="submit" value="搜索" class="btn_search"/></div>
+          </form>
             <input type="button" value="密码重置" class="btn_add" onclick="resetPwd();"/>
             <input type="button" value="增加" class="btn_add" onclick="location.href='admin_add';"/>
         </div>
@@ -277,7 +277,7 @@
                 <a href="/admin/admin_list?pageNum=${pageBean.totalPage}">尾页</a>
             </c:if>
         </div>
-    </form>
+
 </div>
 <!--主要区域结束-->
 <div id="footer">

@@ -54,4 +54,13 @@ public class AccountServiceImpl implements AccountService{
     public int setStauts(Account account) {
         return accountMapper.setStauts(account);
     }
+
+    public PageBean<Account> findAllAccount(Integer pageNum, int pageSize, Account account) {
+        int totalCount = accountMapper.findAccountCount(account);
+        PageBean<Account> pageBean = new PageBean<Account>(pageNum,pageSize,totalCount);
+        pageBean.setT(account);
+        List<Account> accounts = accountMapper.findAllAccount(pageBean);
+        pageBean.setData(accounts);
+        return pageBean;
+    }
 }
