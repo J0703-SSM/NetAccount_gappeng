@@ -28,13 +28,13 @@
             } else {
                 $("#nameErr").css('display', 'none')
             }
-            if ($("#telephone").val() == "") {
+            if (!isPhoneNo($("#telephone").val())) {
                 $("#telErr").css('display', 'block')
                 bool = false
             } else {
                 $("#telErr").css('display', 'none')
             }
-            if ($("#email").val() == "") {
+            if (!isEmail($("#email").val())) {
                 $("#emailErr").css('display', 'block')
                 bool = false
             } else {
@@ -60,7 +60,15 @@
                 })
             }
 
+            function isPhoneNo(phone) {
+                var pattern = /^1[34578]\d{9}$/;
+                return pattern.test(phone);
+            }
 
+            function isEmail(email) {
+                var pattern=/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+                return pattern.test(email)
+            }
 
         }
 
