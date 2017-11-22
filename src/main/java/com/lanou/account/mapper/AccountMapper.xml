@@ -6,30 +6,31 @@
             resultType="int">
         SELECT count(*) FROM account
     </select>
-
+    <!--查询所有-->
     <select id="findAll"
             parameterType="com.lanou.util.PageBean"
             resultType="com.lanou.account.domain.Account">
          SELECT * FROM account limit #{pageSize} offset #{startIndex}
     </select>
+    <!--根据id查询-->
     <select id="findById"
             parameterType="int"
             resultType="com.lanou.account.domain.Account">
         SELECT * FROM account WHERE account_id = #{id}
     </select>
-
+    <!--保存-->
     <insert id="save"
             parameterType="com.lanou.account.domain.Account">
         INSERT into account (recommender_id,login_name,login_passwd,status,create_date,pause_date,close_date,real_name,idcard_no,birthdate,gender,occupation,telephone,email,mailaddress,zipcode,qq,last_login_time,last_login_ip)
         VALUES (#{recommender_id},#{login_name},#{login_passwd},#{status},#{create_date},#{pause_date},#{close_date},#{real_name},#{idcard_no},#{birthdate},#{gender},#{occupation},#{telephone},#{email},#{mailaddress},#{zipcode},#{qq},#{last_login_time},#{last_login_ip})
     </insert>
-
+    <!--删除-->
     <delete id="deleteAccount"
             parameterType="com.lanou.account.domain.Account">
        UPDATE account SET status=#{status},close_date=#{close_date} WHERE account_id=#{account_id}
     </delete>
 
-<!--根据身份证id查找-->
+   <!--根据身份证id查找-->
     <select id="findByIdCard"
             parameterType="java.lang.String"
             resultType="com.lanou.account.domain.Account">

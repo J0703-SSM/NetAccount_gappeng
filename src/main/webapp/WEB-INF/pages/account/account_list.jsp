@@ -169,7 +169,7 @@
                         <c:forEach var="a" items="${pageBean.data}">
                             <tr>
                                 <td>${a.account_id}</td>
-                                <td><a href="account_detail.jsp">${a.real_name}</a></td>
+                                <td><a href="/account/account_detail/${a.account_id}">${a.real_name}</a></td>
                                 <td>${a.idcard_no}</td>
                                 <td>${a.login_name}</td>
                                 <td>

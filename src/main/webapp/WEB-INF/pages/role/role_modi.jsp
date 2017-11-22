@@ -11,34 +11,43 @@
     <script language="javascript" type="text/javascript">
         //保存成功的提示消息
         function showResult(role_id) {
-            alert(1)
             var module_values = [];
             $("input:checkbox:checked").each(function () {
                 module_values.push($(this).val())
             });
-            $.ajax({
-                type: "get",
-                url: "/role/role_modisave",
-                data: {
-                    "moduleIds": module_values,
-                    role_id: role_id,
-                    name:$("#name").val()
-                }, success: function (result) {
-                    alert(2)
-                    if (result.count > 0) {
-                        $("#save_result_info").html("保存成功");
-                        document.getElementById("save_result_info").style.display="block";
-                        window.setTimeout('location.href = "/role/role_list"', 2000);
-                    } else {
-                        $("#save_result_fail").html("保存失败");
-                        document.getElementById("save_result_info").style.display="block";
-                        window.setTimeout('location.href = "/role/role_modi?role_id=' + $("#role_id").val() + '"',2000);
+            var bool = true;
+            if (module_values.length == 0) {
+                $("#moduleErr").css('display', 'block')
+                bool = false
+            } else {
+                $("#moduleErr").css('display', 'none')
+            }
+            if ($("#name").val() == "") {
+                $("#nameErr").css('display', 'block')
+                bool = false
+            } else {
+                $("#nameErr").css('display', 'none')
+            }
+            if (bool) {
+                $.ajax({
+                    type: "get",
+                    url: "/role/role_modisave",
+                    data: {
+                        "moduleIds": module_values,
+                        role_id: role_id,
+                        name: $("#name").val()
+                    }, success: function (result) {
+                        if (result.count > 0) {
+                            $("#save_result_info").html("保存成功");
+                            document.getElementById("save_result_info").style.display = "block";
+                            window.setTimeout('location.href = "/role/role_list"', 2000);
+                        }
 
                     }
 
-                }
+                })
+            }
 
-            })
 
         }
 
@@ -48,7 +57,7 @@
 <!--Logo区域开始-->
 <div id="header">
     <img src="../images/logo.png" alt="logo" class="left"/>
-    <a href="#">[退出]</a>
+    <a href="/">[退出]</a>
 </div>
 <!--Logo区域结束-->
 <!--导航区域开始-->
@@ -115,8 +124,7 @@
         <div class="text_info clearfix"><span>角色名称：</span></div>
         <div class="input_info">
             <input type="text" class="width200" id="name" value="${role.name}"/>
-            <span class="required">*</span>
-            <div class="validate_msg_medium error_msg">不能为空，且为20长度的字母、数字和汉字的组合</div>
+            <div class="validate_msg_long error_msg" id="nameErr" style="display: none">不能为空，且为20长度的字母、数字和汉字的组合</div>
         </div>
         <div class="text_info clearfix"><span>设置权限：</span></div>
         <div class="input_info_high">
@@ -125,7 +133,7 @@
 
                     <c:forEach items="${moduleList}" var="module">
                         <li><input type="checkbox" value="${module.module_id}"
-                                <c:forEach  items="${role.modules}" var="module1">
+                                <c:forEach items="${role.modules}" var="module1">
                                     <c:if test="${module.module_id == module1.module_id}">
                                         checked
                                     </c:if>
@@ -136,12 +144,11 @@
 
                 </ul>
             </div>
-            <span class="required">*</span>
-            <div class="validate_msg_tiny">至少选择一个权限</div>
+            <div class="validate_msg_short error_msg" id="moduleErr" style="display: none">至少选择一个权限</div>
         </div>
         <div class="button_info clearfix">
             <input type="button" value="保存" class="btn_save" onclick="showResult(${role.role_id});"/>
-            <input type="button" value="取消" class="btn_save"/>
+            <input type="button" value="取消" class="btn_save" onclick="location.href='/role/role_list'"/>
         </div>
     </form>
 </div>

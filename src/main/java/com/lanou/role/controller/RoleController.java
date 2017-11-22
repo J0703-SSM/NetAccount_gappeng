@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+
+import java.lang.reflect.Array;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dllo on 17/11/16.
@@ -28,9 +32,16 @@ public class RoleController {
     private RoleService roleService;
     @Resource
     private ModuleService moduleService;
-
     private int pageSize=3;
 
+
+
+    /**
+     * 分页查询
+     * @param pageNum
+     * @param model
+     * @return
+     */
     @RequestMapping("/role_list")
     public String role_list(Integer pageNum,Model model){
         if (pageNum==null){
@@ -41,26 +52,44 @@ public class RoleController {
         return "role/role_list";
     }
 
+    /**
+     * 跳到增加
+     * @return
+     */
     @RequestMapping("/role_add")
     public String role_add(){
         return "role/role_add";
     }
 
-
+    /**
+     * 保存增加
+     * @param
+     * @param name
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/role_save")
-    public AjaxResult<Role> role_save(@RequestParam(value = "moduleIds[]") Integer[] moduleIds,
+    public AjaxResult<Role> role_save(String Ids,
                                 String name){
 
-        AjaxResult<Role> result = new AjaxResult<Role>();
-        System.out.println(name);
-        System.out.println(moduleIds);
+
+        String[] modele_Ids = Ids.split(",");
+
+        AjaxResult result = new AjaxResult();
+       Integer[] moduleIds = new Integer[modele_Ids.length];
+        for (int i = 0; i < modele_Ids.length; i++) {
+            moduleIds[i] = Integer.parseInt(modele_Ids[i]);
+        }
         int count = roleService.saveRole(name, moduleIds);
-        System.out.println(count);
-       result.setCount(count);
+        result.setCount(count);
         return result;
     }
 
+    /**
+     * 删除
+     * @param role_id
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/role_delete")
     public AjaxResult<Role> role_delete(int role_id){
@@ -71,6 +100,12 @@ public class RoleController {
         return result;
     }
 
+    /**
+     * 修改前表单回显
+     * @param role_id
+     * @param model
+     * @return
+     */
     @RequestMapping("/role_modi")
     public String role_modi(int role_id, Model model){
         Role role = roleService.findByRoleId(role_id);
@@ -83,6 +118,12 @@ public class RoleController {
         return "role/role_modi";
     }
 
+    /**
+     * 保存修改
+     * @param moduleIds
+     * @param role
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/role_modisave")
     public AjaxResult<Role> modisave(@RequestParam(value = "moduleIds[]") Integer[] moduleIds,
@@ -99,6 +140,7 @@ public class RoleController {
 
         return result;
     }
+
 
 
 }

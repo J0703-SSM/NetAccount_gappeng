@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminInterceptor implements HandlerInterceptor{
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         Admin admin = (Admin) request.getServletContext().getAttribute("admin");
+        //如果用户为空,重新登录
         if (admin==null){
             request.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(request,response);
         }
+
 
         String uri = request.getRequestURI();
         if (uri.contains("index")){
@@ -26,6 +28,7 @@ public class AdminInterceptor implements HandlerInterceptor{
         if (uri.contains("user")){
             return true;
         }
+        //获取访问路径  登录成功后才可以访问其他页面
         int module_id = 0;
         if (uri.contains("role")){
             module_id =1;

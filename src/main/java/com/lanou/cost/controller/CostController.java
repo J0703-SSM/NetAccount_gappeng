@@ -183,6 +183,15 @@ public class CostController {
         model.addAttribute("cost",cost);
         return "fee/fee_detail";
     }
+
+    /**
+     * 资费排序
+     * @param pageNum
+     * @param sort_name 升序或是降许
+     * @param column  按哪一行进行排序
+     * @param model
+     * @return
+     */
     @RequestMapping("/fee_order")
     public String fee_order(Integer pageNum,String sort_name,String column,Model model){
         model.addAttribute("sort_name",sort_name);
@@ -202,7 +211,12 @@ public class CostController {
     }
 
 
-
+    /**
+     * 添加数据校验
+     * @param cost
+     * @param result
+     * @return
+     */
     private AjaxResult resultMap(Cost cost, BindingResult result) {
         AjaxResult ajaxCostResult = new AjaxResult();
         Map<String, Object> maps = new HashMap<String, Object>();

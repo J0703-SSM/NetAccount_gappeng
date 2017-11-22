@@ -14,18 +14,18 @@ import java.util.Date;
  * Created by dllo on 17/11/13.
  */
 public class Cost implements Serializable{
-    private int cost_id;
+    private int cost_id;//资费id
     @Length(min = 1,max = 10,message = "字符长度在1到10之间")
-    private String name;
-    private int base_duration;
-    private int base_cost;
-    private int unit_cost;
-    private String status;
+    private String name; //资费名字
+    private int base_duration; //基本时长
+    private int base_cost;//基本花费
+    private int unit_cost;//单位花费
+    private String status; //状态
     @Length(min = 1, max = 100, message = "100长度的字母、数字、汉字和下划线的组合")
-    private String descr;
-    private Timestamp creatTime;
-    private Timestamp startTime;
-    private String cost_type;
+    private String descr; //描述
+    private Timestamp creatTime; //创建时间
+    private Timestamp startTime;//开始时间
+    private String cost_type;//套餐类型
 
     public Cost() {
     }

@@ -12,34 +12,46 @@
 
 
         //保存成功的提示消息
-            function showResult() {
-                var module_values = [];
-                $("input:checkbox:checked").each(function () {
-                    module_values.push($(this).val())
-                });
+        function showResult() {
+            var module_values = "";
+            $(":checkbox:checked").each(function () {
+                module_values += $(this).val() + ","
+            });
+            var bool = true;
+            if (module_values.length == 0) {
+                $("#moduleErr").css('display', 'block')
+                bool = false
+            } else {
+                $("#moduleErr").css('display', 'none')
+            }
+            if ($("#roleName").val() == "") {
+                $("#nameErr").css('display', 'block')
+                bool = false
+            } else {
+                $("#nameErr").css('display', 'none')
+            }
+            if (bool) {
                 $.ajax({
-                    type: "get",
+                    type: "post",
                     url: "/role/role_save",
                     data: {
-                        "moduleIds": module_values,
+                        "Ids": module_values,
                         "name": $("#roleName").val()
                     }, success: function (result) {
+
                         if (result.count > 0) {
                             $("#save_result_info").html("保存成功");
-                            document.getElementById("save_result_info").style.display="block";
+                            document.getElementById("save_result_info").style.display = "block";
                             window.setTimeout('location.href = "/role/role_list"', 2000);
-                        } else {
-                            $("#save_result_fail").html("保存失败");
-                            document.getElementById("save_result_info").style.display="block";
-                            window.setTimeout('location.href = "/role/role_add"', 2000);
                         }
 
                     }
 
                 })
-
             }
 
+
+        }
 
 
     </script>
@@ -48,7 +60,7 @@
 <!--Logo区域开始-->
 <div id="header">
     <img src="../images/logo.png" alt="logo" class="left"/>
-    <a href="#">[退出]</a>
+    <a href="/">[退出]</a>
 </div>
 <!--Logo区域结束-->
 <!--导航区域开始-->
@@ -115,8 +127,7 @@
         <div class="text_info clearfix"><span>角色名称：</span></div>
         <div class="input_info">
             <input type="text" class="width200" id="roleName"/>
-            <span class="required">*</span>
-            <div class="validate_msg_medium">不能为空，且为20长度的字母、数字和汉字的组合</div>
+            <div class="validate_msg_long error_msg" id="nameErr" style="display: none">不能为空，且为20长度的字母、数字和汉字的组合</div>
         </div>
         <div class="text_info clearfix"><span>设置权限：</span></div>
         <div class="input_info_high">
@@ -131,12 +142,11 @@
                     <li><input type="checkbox" value="7"/>报表</li>
                 </ul>
             </div>
-            <span class="required">*</span>
-            <div class="validate_msg_tiny">至少选择一个权限</div>
+            <div class="validate_msg_short error_msg" id="moduleErr" style="display: none">至少选择一个权限</div>
         </div>
         <div class="button_info clearfix">
             <input type="button" value="保存" class="btn_save" onclick="showResult()"/>
-            <input type="button" value="取消" class="btn_save"/>
+            <input type="button" value="取消" class="btn_save" onclick="location.href='/role/role_list'"/>
         </div>
     </form>
 </div>

@@ -26,6 +26,12 @@ public class AccountController {
     private AccountService accountService;
     private int pageSize =3;
 
+    /**
+     * 分页查询所有
+     * @param pageNum
+     * @param model
+     * @return
+     */
     @RequestMapping("/account_list")
     public String account(Integer pageNum, Model model){
         if (pageNum==null){
@@ -36,6 +42,10 @@ public class AccountController {
         return "account/account_list";
     }
 
+    /**
+     * 跳到增加界面
+     * @return
+     */
     @RequestMapping("/account_add")
     public String account_add(){
         return "/account/account_add";
@@ -146,6 +156,12 @@ public class AccountController {
         }
         return result;
     }
+
+    /**
+     * 开通或是暂停
+     * @param account
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/account_beginOrStop")
     public AjaxResult<Account> account_beginOrStop(Account account){
@@ -163,6 +179,13 @@ public class AccountController {
         return result;
     }
 
+    /**
+     * 高级查询
+     * @param pageNum
+     * @param account
+     * @param model
+     * @return
+     */
     @RequestMapping("/account_query")
     public String account_query(Integer pageNum,Account account,Model model){
         if (account.getStatus()==null){
@@ -180,6 +203,18 @@ public class AccountController {
         model.addAttribute("pageBean",pageBean);
         return "account/account_list";
     }
+
+    /**
+     * 查看详细信息
+     * @return
+     */
+    @RequestMapping("/account_detail/{account_id}")
+    public String account_detail(@PathVariable int account_id,Model model){
+        Account account = accountService.findById(account_id);
+        model.addAttribute("account",account);
+        return "account/account_detail";
+    }
+
 
 
     public String getBirthday(String id){

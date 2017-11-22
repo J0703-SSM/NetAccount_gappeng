@@ -154,7 +154,7 @@
                     </div>
                     <div class="button_info clearfix">
                         <input type="button" value="保存" class="btn_save" onclick="showResult();" />
-                        <input type="button" value="取消" class="btn_save" />
+                        <input type="button" value="取消" class="btn_save" onclick="location.href='/admin/admin_list'"/>
                     </div>
                 </form>  
         </div>

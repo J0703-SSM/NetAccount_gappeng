@@ -29,17 +29,18 @@ public class AdminController {
 
     @Resource
     private AdminService adminService;
-
     @Resource
     private RoleService roleService;
-
     @Resource
     private ModuleService moduleService;
-
-
-
     private int pageSize=3;
 
+    /**
+     * 分页查询所有
+     * @param pageNum
+     * @param model
+     * @return
+     */
     @RequestMapping("/admin_list")
     public String admin_list(Integer pageNum, Model model){
         if (pageNum==null){
@@ -52,6 +53,11 @@ public class AdminController {
         return "admin/admin_list";
     }
 
+    /**
+     * 调到增加页面
+     * @param model
+     * @return
+     */
     @RequestMapping("/admin_add")
     public String admin_add(Model model){
         List<Role> roles = roleService.findAllRoleNoPage();
@@ -59,6 +65,12 @@ public class AdminController {
         return "admin/admin_add";
     }
 
+    /**
+     * 保存
+     * @param admin
+     * @param role_ids
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/admin_addsave")
     public AjaxResult<Admin> admin_addsave(Admin admin,@RequestParam(value = "role_ids[]") Integer[] role_ids){
@@ -69,6 +81,12 @@ public class AdminController {
         return result;
     }
 
+    /**
+     * 删除
+     * @param admin_id
+     * @return
+     */
+
     @ResponseBody
     @RequestMapping("/admin_delete")
     public AjaxResult<Admin> admin_delete(int admin_id){
@@ -78,6 +96,12 @@ public class AdminController {
         return result;
     }
 
+    /**
+     * 修改表单回显
+     * @param admin_id
+     * @param model
+     * @return
+     */
     @RequestMapping("/admin_modi")
     public String admin_modi( int admin_id,Model model){
         Admin admin = adminService.findAdminById(admin_id);
@@ -87,6 +111,13 @@ public class AdminController {
         return "admin/admin_modi";
     }
 
+    /**
+     * 保存修改
+     * @param admin
+     * @param role_ids
+     * @return
+     */
+
     @ResponseBody
     @RequestMapping("/admin_addmodisave")
     public AjaxResult<Admin> admin_addmodisave(Admin admin,@RequestParam(value = "role_ids[]") Integer[] role_ids){
@@ -95,6 +126,12 @@ public class AdminController {
         result.setCount(count);
         return result;
     }
+
+    /**
+     * 重置密码
+     * @param pwd_ids
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/admin_resetPwd")
     public AjaxResult<Admin> admin_resetPwd(@RequestParam(value = "pwd_ids[]") Integer[] pwd_ids){
@@ -109,6 +146,15 @@ public class AdminController {
         return result;
 
     }
+
+    /**
+     * 高级查询
+     * @param pageNum
+     * @param module_id
+     * @param role_name
+     * @param model
+     * @return
+     */
     @RequestMapping("/admin_query")
     public String admin_query(Integer pageNum,Integer module_id,String role_name,Model model){
         if (module_id ==null){

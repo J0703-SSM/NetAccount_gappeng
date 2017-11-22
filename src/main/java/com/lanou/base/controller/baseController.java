@@ -59,25 +59,6 @@ public class baseController {
         Admin admin1 = adminService.findBydmin(admin);
 
         if (verifyCode.equalsIgnoreCase(verifyCode1) && admin1 != null) {
-//            List<Module> list = new ArrayList<Module>();
-//            for (Role role : admin1.getRoles()) {
-//                List<Module> modules = role.getModules();
-//                list.addAll(modules);
-//            }
-//            for (int i = 0; i < list.size(); i++) {
-//                for (int j = list.size()-1; j > i; j--) {
-//                    if (list.get(j).getModule_id() == list.get(i).getModule_id()){
-//                        list.remove(j);
-//                    }
-//                }
-//            }
-//            List<Role> roles = admin1.getRoles();
-//            if (roles.size()>0){
-//                for (int i = 0; i <roles.size(); i++) {
-//                    roles.get(i).setModules(new ArrayList<Module>());
-//                }
-//                roles.get(0).setModules(list);
-//            }
             request.getServletContext().setAttribute("admin",admin1);
             return "index";
         }

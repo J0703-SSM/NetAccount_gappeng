@@ -13,19 +13,13 @@ import java.util.List;
  */
 public class Admin {
     private int admin_id;
-
     private String admin_code;
-
     private String password;
-
     private String name;
-
     private String telephone;
-
     private String email;
     private Timestamp enrolldate;
     private String repassword;
-
     private String verifyCode;
 
 
