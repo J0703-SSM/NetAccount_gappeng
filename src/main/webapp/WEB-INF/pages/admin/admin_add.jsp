@@ -15,29 +15,72 @@
                 $("input:checkbox:checked").each(function () {
                     role_ids.push($(this).val())
                 });
-                $.ajax({
-                    type:"post",
-                    url:"/admin/admin_addsave",
-                    data:{
-                        name:$("#name").val(),
-                        admin_code:$("#admin_code").val(),
-                        password:$("#password").val(),
-                        repassword:$("#repassword").val(),
-                        telephone:$("#telephone").val(),
-                        email:$("#email").val(),
-                        role_ids:role_ids
-                    },success:function (result) {
-                        if (result.count>0){
-                            $("#save_result_info").html("保存成功");
-                            document.getElementById("save_result_info").style.display="block";
-                            window.setTimeout('location.href = "/admin/admin_list"', 3000);
-                        }else {
-                            $("#save_result_fail").html("保存失败");
-                            document.getElementById("save_result_fail").style.display="block";
-                            window.setTimeout('location.href = "/admin/admin_add"', 3000);
+                var bool = true;
+                if (role_ids.length == 0) {
+                    $("#moduleErr").css('display', 'block')
+                    bool = false
+                } else {
+                    $("#moduleErr").css('display', 'none')
+                }
+                if ($("#name").val()==""){
+                    $("#nameErr").css('display', 'block')
+                    bool = false
+                } else {
+                    $("#nameErr").css('display', 'none')
+                }
+                if ($("#admin_code").val()==""){
+                    $("#codeErr").css('display', 'block')
+                    bool = false
+                } else {
+                    $("#codeErr").css('display', 'none')
+                }
+                if ($("#password").val()==""){
+                    $("#passwordErr").css('display', 'block')
+                    bool = false
+                } else {
+                    $("#passwordErr").css('display', 'none')
+                }
+                if ($("#password").val()!= $("#repassword").val()){
+                    $("#repasswordErr").css('display', 'block')
+                    bool = false
+                }else {
+                    $("#repasswordErr").css('display', 'none')
+                }
+                if ($("#telephone").val()==""){
+                    $("#telErr").css('display', 'block')
+                    bool = false
+                }else {
+                    $("#telErr").css('display', 'none')
+                }
+                if ($("#email").val()==""){
+                    $("#emailErr").css('display', 'block')
+                    bool = false
+                }else {
+                    $("#emailErr").css('display', 'none')
+                }
+                if (bool){
+                    $.ajax({
+                        type:"post",
+                        url:"/admin/admin_addsave",
+                        data:{
+                            name:$("#name").val(),
+                            admin_code:$("#admin_code").val(),
+                            password:$("#password").val(),
+                            repassword:$("#repassword").val(),
+                            telephone:$("#telephone").val(),
+                            email:$("#email").val(),
+                            role_ids:role_ids
+                        },success:function (result) {
+                            if (result.count>0){
+                                $("#save_result_info").html("保存成功");
+                                document.getElementById("save_result_info").style.display="block";
+                                window.setTimeout('location.href = "/admin/admin_list"', 3000);
+                            }
                         }
-                    }
-                })
+                    })
+                }
+
+
 
 
             }
@@ -114,32 +157,32 @@
                     <div class="text_info clearfix"><span>姓名：</span></div>
                     <div class="input_info">
                         <input type="text" id="name"/>
-                        <div class="validate_msg_long">20长度以内的汉字、字母、数字的组合</div>
+                        <div class="validate_msg_long error_msg" id="nameErr" style="display: none">不能为空，且为20长度的字母、数字和汉字的组合</div>
                     </div>
                     <div class="text_info clearfix"><span>管理员账号：</span></div>
                     <div class="input_info">
                         <input type="text" id="admin_code" />
-                        <div class="validate_msg_long">30长度以内的字母、数字和下划线的组合</div>
+                        <div class="validate_msg_long error_msg" id="codeErr" style="display: none">30长度以内的字母、数字和下划线的组合</div>
                     </div>
                     <div class="text_info clearfix"><span>密码：</span></div>
                     <div class="input_info">
                         <input type="password" id="password" />
-                        <div class="validate_msg_long ">30长度以内的字母、数字和下划线的组合</div>
+                        <div class="validate_msg_long error_msg" id="passwordErr" style="display:none">30长度以内的字母、数字和下划线的组合</div>
                     </div>
                     <div class="text_info clearfix"><span>重复密码：</span></div>
                     <div class="input_info">
                         <input type="password" id="repassword" />
-                        <div class="validate_msg_long ">两次密码必须相同</div>
+                        <div class="validate_msg_long error_msg" id="repasswordErr" style="display: none">两次密码必须相同</div>
                     </div>      
                     <div class="text_info clearfix"><span>电话：</span></div>
                     <div class="input_info">
                         <input type="text" class="width200" id="telephone"/>
-                        <div class="validate_msg_medium ">正确的电话号码格式：手机或固话</div>
+                        <div class="validate_msg_medium error_msg" id="telErr" style="display: none">正确的电话号码格式：手机或固话</div>
                     </div>
                     <div class="text_info clearfix"><span>Email：</span></div>
                     <div class="input_info">
                         <input type="text" class="width200" id="email"/>
-                        <div class="validate_msg_medium "></div>
+                        <div class="validate_msg_medium error_msg" style="display: none" id="emailErr">正确的邮箱格式</div>
                     </div>
                     <div class="text_info clearfix"><span>角色：</span></div>
                     <div class="input_info_high">
@@ -150,7 +193,7 @@
                                 </c:forEach>
                             </ul>
                         </div>
-                        <div class="validate_msg_tiny">至少选择一个</div>
+                        <div class="validate_msg_short error_msg" id="moduleErr" style="display: none">至少选择一个权限</div>
                     </div>
                     <div class="button_info clearfix">
                         <input type="button" value="保存" class="btn_save" onclick="showResult();" />
